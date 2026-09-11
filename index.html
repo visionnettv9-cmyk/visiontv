@@ -42,7 +42,7 @@ body{background:#000;height:100vh;overflow:hidden}
 /* CONTENEDOR DERECHO */
 .derecha-box{flex:1;height:calc(100vh - 24px);background:#080808;border:1px solid #444;border-radius:18px;padding:12px;display:flex;flex-direction:column;overflow:hidden;position:relative}
 
-/* VISTA PREVIA / BANNER CON AJUSTE CORRECTO DE TAMAÑO */
+/* VISTA PREVIA */
 .vista-preview{
   flex:1;
   width:100%;
@@ -56,7 +56,7 @@ body{background:#000;height:100vh;overflow:hidden}
   transition: background-image 0.25s ease-in-out;
 }
 
-/* VISTA DEL BUSCADOR REDUCIDA (ZONA VERDE - ANCHO 580PX) */
+/* VISTA DEL BUSCADOR (ZONA VERDE) */
 .vista-buscador{
   display:none;
   flex-direction:column;
@@ -120,7 +120,6 @@ body{background:#000;height:100vh;overflow:hidden}
 
 <!-- LADO DERECHO -->
 <div class="derecha-box">
-  <!-- MUESTRA LA IMAGEN DE PORTADA DE LA SECCIÓN -->
   <div id="vistaPreview" class="vista-preview"></div>
 
   <!-- INTERFAZ DEL BUSCADOR REDUCIDA -->
@@ -131,8 +130,23 @@ body{background:#000;height:100vh;overflow:hidden}
       <div class="fila-teclas"><button>K</button><button>L</button><button>M</button><button>N</button><button>O</button><button>P</button><button>Q</button><button>R</button><button>S</button><button>T</button></div>
       <div class="fila-teclas"><button>U</button><button>V</button><button>W</button><button>X</button><button>Y</button><button>Z</button><button>0</button><button>1</button><button>2</button><button>3</button><button>ESPACIO</button><button>⌫</button></div>
     </div>
-    <div class="filtros" id="filtros"><button class="activo">Todo</button><button>Canales</button><button>Películas</button><button>Series</button></div>
-    <div class="resultados" id="lista"><div class="item">📺 Antena 3 HD</div><div class="item">📺 Telecinco HD</div><div class="item">🎬 Gladiador 2</div></div>
+    
+    <!-- PESTAÑAS DE FILTRO POR CATEGORÍA -->
+    <div class="filtros" id="filtros">
+      <button class="activo" data-cat="todo">Todo</button>
+      <button data-cat="canales">Canales</button>
+      <button data-cat="peliculas">Películas</button>
+      <button data-cat="series">Series</button>
+    </div>
+
+    <!-- RESULTADOS CON ATRIBUTOS DE CATEGORÍA -->
+    <div class="resultados" id="lista">
+      <div class="item" data-cat="canales">📺 Antena 3 HD</div>
+      <div class="item" data-cat="canales">📺 Telecinco HD</div>
+      <div class="item" data-cat="peliculas">🎬 Gladiador 2</div>
+      <div class="item" data-cat="series">📺 The Last of Us</div>
+      <div class="item" data-cat="peliculas">🎬 Avatar 2</div>
+    </div>
   </div>
 </div>
 
@@ -141,18 +155,36 @@ body{background:#000;height:100vh;overflow:hidden}
 <script>
 const menuItems=document.querySelectorAll('#menu a'), boxInput=document.getElementById('boxInput'), tecladoBtns=document.querySelectorAll('#tecladoTV button'), filtroBtns=document.querySelectorAll('#filtros button'), buscador=document.getElementById('buscador');
 const vistaPreview=document.getElementById('vistaPreview'), vistaBuscador=document.getElementById('vistaBuscador');
-const getLista=()=>document.querySelectorAll('#lista .item');
+
+// Obtiene únicamente los elementos visibles en la pantalla (después del filtro de texto y categoría)
+const getVisibles = () => Array.from(document.querySelectorAll('#lista .item')).filter(el => el.style.display !== 'none');
 
 let zona='menu', mPos=0, tPos=0, fPos=0, lPos=0;
 let enModoBuscador = false;
+let categoriaActual = 'todo';
 
 function filtrarResultados(){
   const query = buscador.value.toLowerCase().trim();
-  const items = getLista();
-  items.forEach(item => {
+  const todosLosItems = document.querySelectorAll('#lista .item');
+
+  todosLosItems.forEach(item => {
     const texto = item.textContent.toLowerCase();
-    item.style.display = texto.includes(query) ? 'block' : 'none';
+    const catItem = item.dataset.cat;
+    
+    const coincideTexto = texto.includes(query);
+    const coincideCategoria = (categoriaActual === 'todo' || catItem === categoriaActual);
+
+    if (coincideTexto && coincideCategoria) {
+      item.style.display = 'block';
+    } else {
+      item.style.display = 'none';
+    }
   });
+
+  // Ajustar posición si la lista visible se redujo
+  if (lPos >= getVisibles().length) {
+    lPos = Math.max(0, getVisibles().length - 1);
+  }
 }
 
 buscador.addEventListener('input', filtrarResultados);
@@ -184,10 +216,10 @@ function enfocar(){
     filtroBtns[fPos]?.classList.add('foco'); 
   }
   if(zona==='lista') {
-    const el = getLista()[lPos];
-    if(el) {
-      el.classList.add('foco');
-      el.scrollIntoView({block:'nearest', behavior:'smooth'});
+    const visibles = getVisibles();
+    if(visibles.length > 0 && visibles[lPos]) {
+      visibles[lPos].classList.add('foco');
+      visibles[lPos].scrollIntoView({block:'nearest', behavior:'smooth'});
     }
   } 
 }
@@ -220,13 +252,22 @@ function seleccionar(){
     }
   }
 
-  // AL DAR ENTER EN LA BARRA DE LUPA -> ACTIVA EL CURSOR DEL INPUT PARA ESCRIBIR
   if(zona==='input'){
     buscador.focus();
   }
 
-  if(zona==='filtros') filtroBtns[fPos]?.classList.add('activo'); 
-  if(zona==='lista') getLista()[lPos]?.classList.add('activo');
+  if(zona==='filtros') {
+    filtroBtns[fPos]?.classList.add('activo'); 
+    categoriaActual = filtroBtns[fPos].dataset.cat;
+    filtrarResultados();
+  }
+
+  if(zona==='lista') {
+    const visibles = getVisibles();
+    if (visibles[lPos]) {
+      visibles[lPos].classList.add('activo');
+    }
+  }
   
   if(zona==='teclado'){
     const tecla = tecladoBtns[tPos].textContent;
@@ -267,15 +308,21 @@ document.addEventListener('keydown', e => {
     if(zona==='menu') { mPos=Math.min(mPos+1, menuItems.length-1); }
     else if(zona==='input'){ zona='teclado'; tPos=0; } 
     else if(zona==='teclado'){ if(tPos<20) tPos+=10; else { zona='filtros'; fPos=0; } } 
-    else if(zona==='filtros'){ zona='lista'; lPos=0; } 
-    else if(zona==='lista') { lPos=Math.min(lPos+1, getLista().length-1); }
+    else if(zona==='filtros'){ 
+      if (getVisibles().length > 0) { zona='lista'; lPos=0; }
+    } 
+    else if(zona==='lista') { 
+      lPos = Math.min(lPos + 1, getVisibles().length - 1); 
+    }
   }
   
   if(e.key==='ArrowUp'){ 
     if(zona==='menu') { mPos=Math.max(mPos-1, 0); }
     else if(zona==='teclado'){ if(tPos>=10) tPos-=10; else zona='input'; } 
     else if(zona==='filtros'){ zona='teclado'; tPos=20; } 
-    else if(zona==='lista'){ if(lPos===0) zona='filtros'; else lPos--; } 
+    else if(zona==='lista'){ 
+      if(lPos===0) zona='filtros'; else lPos--; 
+    } 
     else if(zona==='input') { zona='menu'; }
   }
   
