@@ -2,38 +2,40 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VISIONTV</title>
+<title>VISIONTV v9 - FILTRO FIX</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial, sans-serif}
-body{background:#000;height:100vh;overflow:hidden}
-.fondo{position:fixed;inset:0;z-index:-1;background:repeating-linear-gradient(-55deg, transparent 0 18px, rgba(180,0,0,0.9) 18px 20px, transparent 20px 38px, rgba(255,0,0,0.7) 38px 40px)}
-.container{display:flex;padding:12px;gap:12px;height:100vh}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+html,body{width:100%;height:100%;background:#000!important;overflow:hidden}
+.fondo{position:fixed;inset:0;z-index:0;background:#000 repeating-linear-gradient(-55deg, transparent 0 18px, rgba(180,0,0,0.9) 18px 20px, transparent 20px 38px, rgba(255,0,0,0.7) 38px 40px)}
+.container{position:relative;z-index:1;display:flex;padding:12px;gap:12px;height:100vh}
 .menu-box{width:340px;height:calc(100vh - 24px);border:1px solid #666;border-radius:18px;background:#0e0e0e;padding:18px 6px 0 6px;display:flex;flex-direction:column;overflow:hidden}
-.menu{flex:1;overflow-y:auto;overflow-x:visible;padding:6px 10px 6px 6px}
-.menu::-webkit-scrollbar{width:0;display:none}
-.menu{scrollbar-width:none;-ms-overflow-style:none}
-.menu a{display:flex;align-items:center;gap:10px;padding:10px 12px;color:#666;text-decoration:none;font-size:16px;border-radius:12px;cursor:pointer;border:2px solid transparent;transition:all 0.18s ease;margin:3px 0}
+.menu{flex:1;overflow-y:auto;overflow-x:visible;padding:6px 10px}
+.menu::-webkit-scrollbar{display:none}
+.menu{scrollbar-width:none}
+.menu a{display:block;padding:11px 12px;color:#666;text-decoration:none;font-size:16px;border-radius:12px;border:2px solid transparent;transition:all.18s ease;margin:4px 0}
 .menu a.activo{background:#222!important;color:#fff!important;transform:scale(1.06);border-color:#333!important;font-weight:700}
-.menu a.foco{background:#2c2c2c!important;color:#fff!important;transform:scale(1.1);border-color:#fff!important;box-shadow:0 0 12px #fff, 0 0 25px rgba(255,255,255,0.5)!important;z-index:10;position:relative}
-.menu-footer{padding:15px 10px;color:#888;font-size:11px;border-top:1px solid #222;margin-top:10px;flex-shrink:0}
+.menu a.foco{background:#2c2c2c!important;color:#fff!important;transform:scale(1.1);border-color:#fff!important;box-shadow:0 0 12px #fff,0 0 25px rgba(255,255,255,.5)!important;z-index:2;position:relative}
+.menu-footer{padding:15px 10px;color:#888;font-size:11px;border-top:1px solid #222;margin-top:10px}
 .buscar-box{flex:1;height:calc(100vh - 24px);background:#0e0e0e;border:1px solid #666;border-radius:18px;padding:18px;display:flex;flex-direction:column;overflow:hidden}
-.search-input{display:flex;align-items:center;background:#1c1c1c;border:2px solid #333;border-radius:12px;padding:12px 15px;gap:10px;transition:0.18s}
+.search-input{display:flex;align-items:center;background:#1c1c1c;border:2px solid #333;border-radius:12px;padding:12px 15px;gap:10px}
 .search-input input{flex:1;background:transparent;border:none;color:#fff;font-size:16px;outline:none}
 .search-input.foco{border-color:#fff!important;box-shadow:0 0 15px #fff!important;transform:scale(1.02)}
-.filtros{display:flex;gap:8px;margin-top:14px;flex-shrink:0}
-.filtros button{background:#1e1e1e;border:2px solid #333;color:#aaa;padding:6px 14px;border-radius:20px;transition:0.18s;cursor:pointer}
+.filtros{display:flex;gap:8px;margin-top:14px}
+.filtros button{background:#1e1e1e;border:2px solid #333;color:#aaa;padding:6px 14px;border-radius:20px;cursor:pointer}
 .filtros button.activo{background:#222;color:#fff;border-color:#555;transform:scale(1.08)}
 .filtros button.foco{border-color:#fff!important;box-shadow:0 0 12px #fff!important;transform:scale(1.12);color:#fff!important}
 .resultados{margin-top:16px;flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:6px}
 .resultados::-webkit-scrollbar{display:none}
 .resultados{scrollbar-width:none}
-.item{display:flex;align-items:center;gap:12px;padding:12px 14px;background:#161616;border-radius:10px;border:2px solid #222;color:#777;transition:0.18s}
-.item.activo{background:#222!important;color:#fff!important;transform:scale(1.03);border-color:#444!important}
+.item{display:flex;align-items:center;padding:12px 14px;background:#161616;border-radius:10px;border:2px solid #222;color:#777}
 .item.foco{border-color:#fff!important;box-shadow:0 0 12px #fff!important;transform:scale(1.06);color:#fff!important;background:#2f2f2f!important}
-.teclado-tv{display:flex;flex-direction:column;gap:6px;margin-top:12px;background:#161616;border-radius:12px;padding:12px;flex-shrink:0}
+.teclado-tv{display:flex;flex-direction:column;gap:6px;margin-top:12px;background:#161616;border-radius:12px;padding:12px}
 .fila-teclas{display:flex;gap:6px;justify-content:center}
-.fila-teclas button{background:#2a2a2a;border:2px solid #444;color:#fff;padding:8px 10px;border-radius:8px;min-width:36px;transition:0.18s;cursor:pointer}
+.fila-teclas button{background:#2a2a2a;border:2px solid #444;color:#fff;padding:8px 10px;border-radius:8px;min-width:36px;cursor:pointer;transition:.18s}
 .fila-teclas button.foco{border-color:#fff!important;box-shadow:0 0 12px #fff!important;transform:scale(1.2);background:#fff!important;color:#000!important}
 </style>
 </head>
@@ -42,12 +44,12 @@ body{background:#000;height:100vh;overflow:hidden}
 <div class="container">
 <div class="menu-box">
 <div class="menu" id="menu">
-<a>🔍 Buscar</a><a>⭐ Favoritos</a><a>📶 TV-Espanol</a><a>📶 TV-English</a><a>🎬 Peliculas</a><a>🎬 Movies</a><a>📺 Series Sub</a><a>🙂 KidZone</a><a>🏃 Ondeman - Sport</a><a>🏃 Live TV - Sport</a><a>📶 Zona Music</a><a>📶 24/7</a><a>🔞 Adult Live</a><a>🔞 Adult VOD</a><a>⚙️ Configuraciones</a>
+<a>🔍 Buscar</a><a>⭐ Favoritos</a><a>📶 TV-Espanol</a><a>📶 TV-English</a><a>🎬 Peliculas</a><a>🎬 Movies</a><a>📺 Series</a><a>📺 Series Sub</a><a>🙂 KidZone</a><a>🏃 Ondeman - Sport</a><a>🏃 Live TV - Sport</a><a>📶 Zona Music</a><a>📶 24/7</a><a>🔞 Adult Live</a><a>🔞 Adult VOD</a><a>⚙️ Configuraciones</a>
 </div>
 <div class="menu-footer">Cuenta: 47810922<br>Vence: 15/05/2028</div>
 </div>
 <div class="buscar-box">
-<div class="search-input" id="boxInput">🔍 <input id="buscador" placeholder="Escribe película, serie o canal..."></div>
+<div class="search-input" id="boxInput">🔍 <input id="buscador" autocomplete="off" placeholder="Escribe..."></div>
 <div class="teclado-tv" id="tecladoTV">
 <div class="fila-teclas"><button>A</button><button>B</button><button>C</button><button>D</button><button>E</button><button>F</button><button>G</button><button>H</button><button>I</button><button>J</button></div>
 <div class="fila-teclas"><button>K</button><button>L</button><button>M</button><button>N</button><button>O</button><button>P</button><button>Q</button><button>R</button><button>S</button><button>T</button></div>
@@ -55,98 +57,97 @@ body{background:#000;height:100vh;overflow:hidden}
 </div>
 <div class="filtros" id="filtros"><button class="activo">Todo</button><button>Canales</button><button>Películas</button><button>Series</button></div>
 <div class="resultados" id="lista">
-<div class="item">📺 Antena 3 HD</div>
-<div class="item">📺 Telecinco HD</div>
-<div class="item">🎬 Gladiador 2</div>
-<div class="item">📺 La Casa de Papel</div>
-<div class="item">📺 Azteca Siete</div>
-<div class="item">📺 ESPN Deportes</div>
-<div class="item">📺 Fox Premium</div>
-<div class="item">🎬 Avengers Endgame</div>
+<div class="item" data-name="antena 3 hd">📺 Antena 3 HD</div>
+<div class="item" data-name="telecinco hd">📺 Telecinco HD</div>
+<div class="item" data-name="gladiador 2">🎬 Gladiador 2</div>
+<div class="item" data-name="la casa de papel">📺 La Casa de Papel</div>
+<div class="item" data-name="azteca siete">📺 Azteca Siete</div>
+<div class="item" data-name="espn deportes">📺 ESPN Deportes</div>
+<div class="item" data-name="fox premium">📺 Fox Premium</div>
+<div class="item" data-name="avengers endgame">🎬 Avengers Endgame</div>
 </div>
 </div>
 </div>
 <script>
+// v9 FIX FILTRO
 const input=document.getElementById('buscador');
 const boxInput=document.getElementById('boxInput');
 const menuItems=document.querySelectorAll('#menu a');
 const tecladoBtns=document.querySelectorAll('#tecladoTV button');
 const filtroBtns=document.querySelectorAll('#filtros button');
-const getLista=()=>document.querySelectorAll('#lista.item');
+const listaCont=document.getElementById('lista');
+
+function getLista(){return document.querySelectorAll('#lista.item');}
 let zona='menu', mPos=0, tPos=0, fPos=0, lPos=0;
 
 function quitarFocos(){document.querySelectorAll('.foco').forEach(e=>e.classList.remove('foco'))}
 function enfocar(){
   quitarFocos();
   if(zona==='menu') menuItems[mPos]?.classList.add('foco');
-  if(zona==='input'){boxInput.classList.add('foco'); input.focus();}
+  if(zona==='input'){boxInput.classList.add('foco');}
   if(zona==='teclado') tecladoBtns[tPos]?.classList.add('foco');
   if(zona==='filtros') filtroBtns[fPos]?.classList.add('foco');
   if(zona==='lista') getLista()[lPos]?.classList.add('foco');
   menuItems[mPos]?.scrollIntoView({block:'nearest'});
 }
 function seleccionar(){
-  if(zona==='menu' || zona==='filtros' || zona==='lista'){
-    document.querySelectorAll('.activo').forEach(e=>e.classList.remove('activo'));
+  if(zona==='menu' || zona==='filtros'){
+    document.querySelectorAll('#menu a.activo, #filtros button.activo').forEach(e=>e.classList.remove('activo'));
     if(zona==='menu') menuItems[mPos]?.classList.add('activo');
     if(zona==='filtros') filtroBtns[fPos]?.classList.add('activo');
-    if(zona==='lista') getLista()[lPos]?.classList.add('activo');
   }
   if(zona==='teclado'){
-    const txt=tecladoBtns[tPos]?.textContent;
+    const txt=tecladoBtns[tPos].textContent.trim();
     if(txt==='⌫') input.value=input.value.slice(0,-1);
     else if(txt==='ESPACIO') input.value+=' ';
     else input.value+=txt;
-    filtrar();
+    filtrar(); // FILTRA CADA LETRA
   }
 }
 function filtrar(){
   const txt=input.value.toLowerCase().trim();
-  getLista().forEach(i=>{
-    const contenido=i.textContent.toLowerCase();
-    if(txt==='' || contenido.includes(txt)){
-      i.style.display='flex';
+  console.log("filtrando:",txt);
+  getLista().forEach(item=>{
+    const name=item.getAttribute('data-name') || item.textContent.toLowerCase();
+    if(txt==='' || name.includes(txt)){
+      item.style.display='flex';
     } else {
-      i.style.display='none';
+      item.style.display='none';
     }
   });
 }
+
 tecladoBtns.forEach((btn,idx)=>{
   btn.addEventListener('click',()=>{
-    tPos=idx; zona='teclado'; seleccionar(); enfocar();
+    tPos=idx; zona='teclado';
+    seleccionar(); enfocar();
   });
 });
+
 input.addEventListener('input', filtrar);
+input.addEventListener('keyup', filtrar);
+
 menuItems[0].classList.add('activo');
+
 document.addEventListener('keydown',e=>{
-  const lista=getLista();
   if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key)) e.preventDefault();
   if(e.key==='ArrowDown'){
     if(zona==='menu') mPos=Math.min(mPos+1,menuItems.length-1);
-    else if(zona==='input'){zona='teclado'; tPos=0;}
-    else if(zona==='teclado'){ if(tPos<20) tPos+=10; else {zona='filtros'; fPos=0;} }
-    else if(zona==='filtros'){zona='lista'; lPos=0;}
-    else if(zona==='lista') lPos=Math.min(lPos+1,lista.length-1);
+    else if(zona==='input'){zona='teclado';tPos=0;}
+    else if(zona==='teclado'){if(tPos<20) tPos+=10; else{zona='filtros';fPos=0;}}
+    else if(zona==='filtros'){zona='lista';lPos=0;}
+    else if(zona==='lista') lPos=Math.min(lPos+1,getLista().length-1);
   }
   if(e.key==='ArrowUp'){
     if(zona==='menu') mPos=Math.max(mPos-1,0);
-    else if(zona==='teclado'){ if(tPos>=10) tPos-=10; else zona='input'; }
-    else if(zona==='filtros'){zona='teclado'; tPos=20;}
-    else if(zona==='lista'){ if(lPos===0) zona='filtros'; else lPos--; }
+    else if(zona==='teclado'){if(tPos>=10) tPos-=10; else zona='input';}
+    else if(zona==='filtros'){zona='teclado';tPos=20;}
+    else if(zona==='lista'){if(lPos===0) zona='filtros'; else lPos--;}
     else if(zona==='input') zona='menu';
   }
-  if(e.key==='ArrowRight'){
-    if(zona==='menu') zona='input';
-    else if(zona==='teclado') tPos=Math.min(tPos+1,tecladoBtns.length-1);
-    else if(zona==='filtros') fPos=Math.min(fPos+1,filtroBtns.length-1);
-  }
-  if(e.key==='ArrowLeft'){
-    if(zona==='teclado') tPos=Math.max(tPos-1,0);
-    else if(zona==='filtros'){ if(fPos===0) zona='menu'; else fPos--; }
-    else if(zona==='lista' || zona==='input') zona='menu';
-  }
-  if(e.key==='Enter'){ seleccionar(); }
-  if(e.key==='Escape' || e.key==='Backspace'){ if(zona!=='input') zona='menu'; }
+  if(e.key==='ArrowRight'){if(zona==='menu') zona='input'; else if(zona==='teclado') tPos=Math.min(tPos+1,tecladoBtns.length-1); else if(zona==='filtros') fPos=Math.min(fPos+1,filtroBtns.length-1);}
+  if(e.key==='ArrowLeft'){if(zona==='teclado') tPos=Math.max(tPos-1,0); else if(zona==='filtros'){if(fPos===0) zona='menu'; else fPos--;} else if(zona==='lista'||zona==='input') zona='menu';}
+  if(e.key==='Enter'){seleccionar();}
   enfocar();
 });
 enfocar();
