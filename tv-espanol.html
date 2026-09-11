@@ -1,24 +1,29 @@
-<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>TV</title><script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-<style>*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}body{background:#0a0a0a;color:#fff;overflow:hidden}.guia{width:100vw;height:100vh;display:flex;flex-direction:column}.preview-area{height:42vh;display:flex;padding:15px;gap:15px}.video-preview{width:32%;background:#000;border:1px solid #333}.video-preview video{width:100%;height:100%;object-fit:cover}.info-top{flex:1;padding:10px;position:relative}.info-top h2{font-size:26px;font-weight:800}.logo-box{position:absolute;right:20px;top:15px;width:120px;height:120px;background:#fff;border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden}.logo-box img{width:90%;height:90%;object-fit:contain}.lista{flex:1;overflow-y:auto;background:rgba(20,20,20,.9)}.canal{display:flex;align-items:center;padding:12px 15px;border-bottom:1px solid #333;cursor:pointer;gap:12px}.canal.activo{background:rgba(0,102,255,0.65)!important}.c-logo{width:50px;height:32px;background:#fff;border-radius:4px;display:flex;align-items:center;justify-content:center;overflow:hidden}.c-logo img{width:100%;height:100%;object-fit:contain}.c-name{width:160px;font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#player{position:fixed;top:0;left:0;width:100vw;height:100vh;background:#000;display:none;z-index:100}#player video{width:100%;height:100%}</style></head><body>
-<div class="guia" id="guia"><div class="preview-area"><div class="video-preview"><video id="prevVideo" autoplay muted playsinline></video></div><div class="info-top"><h2 id="chName">Cargando...</h2><div class="logo-box"><img id="logoBox"></div></div></div><div class="lista" id="listaCanales"></div></div>
-<div id="player"><video id="fullVideo" autoplay playsinline></video></div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>PRUEBA VISIONTV</title>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+</head>
+<body style="background:black;color:white;font-family:Arial;text-align:center">
+<h2>PRUEBA - Si se ve NASA, tu web ya jala</h2>
+<video id="v" controls autoplay muted style="width:90%;max-width:800px;background:#000"></video>
+<br><br>
+<button onclick="play('https://nasa.nasawestvalley.com/nasatv-all/nasatv-all.m3u8')">NASA TV</button>
+<button onclick="play('https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/stream04/streamPlaylist.m3u8')">DW Español</button>
+<button onclick="play('https://ztvapp.online/live/ST526GHT82/ST526GHT82/18660.m3u8')">TU HBO (solo audio)</button>
+
 <script>
-const CANALES = {
- "TV-Español": [
-  // ESTOS SI SE VEN EN GITHUB (HTTPS + H264)
-  {nombre:"NASA TV HD - PRUEBA", logo:"https://upload.wikimedia.org/wikipedia/commons/e/e5/NASA_logo.svg", url:"https://nasa.nasawestvalley.com/nasatv-all/nasatv-all.m3u8"},
-  {nombre:"DW Español", logo:"https://upload.wikimedia.org/wikipedia/commons/6/6a/DW_logo.svg", url:"https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/stream04/streamPlaylist.m3u8"},
-  {nombre:"France 24 Español", logo:"https://upload.wikimedia.org/wikipedia/commons/a/af/France_24_logo.svg", url:"https://live.france24.com/hls/live/2097212/F24_ES_HI_HLS/master_500.m3u8"},
-  {nombre:"Red Bull TV", logo:"https://upload.wikimedia.org/wikipedia/commons/b/b9/Red_Bull_TV_logo.svg", url:"https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master.m3u8"},
-  // TU HBO - ESTE SOLO SE VA A OIR EN WEB, EN APP SI SE VE
-  {nombre:"HBO - TU LINK (solo audio en web)", logo:"https://upload.wikimedia.org/wikipedia/commons/1/15/HBO_logo_2019.svg", url:"https://ztvapp.online/live/ST526GHT82/ST526GHT82/18660.m3u8"},
- ]
-};
-let canales=[...CANALES["TV-Español"]], sel=0;
-function playHLS(v,u){ if(Hls.isSupported()){let h=new Hls();h.loadSource(u);h.attachMedia(v);}else{v.src=u;} }
-function render(){let l=document.getElementById('listaCanales');l.innerHTML="";canales.forEach((c,i)=>{let d=document.createElement('div');d.className='canal'+(i==sel?' activo':'');d.innerHTML=`<div class="c-logo"><img src="${c.logo}"></div><div class="c-name">${c.nombre}</div>`;d.onclick=()=>{sel=i;render();preview();};l.appendChild(d);});}
-function preview(){let c=canales[sel];document.getElementById('chName').innerText=c.nombre;document.getElementById('logoBox').src=c.logo;playHLS(document.getElementById('prevVideo'),c.url);}
-function enter(){let c=canales[sel];document.getElementById('guia').style.display='none';document.getElementById('player').style.display='block';playHLS(document.getElementById('fullVideo'),c.url);}
-document.addEventListener('keydown',e=>{if(e.key=='Enter')enter(); if(e.key=='Escape'){document.getElementById('player').style.display='none';document.getElementById('guia').style.display='flex';} if(e.key=='ArrowDown'){sel=(sel+1)%canales.length;render();preview();} if(e.key=='ArrowUp'){sel=(sel-1+canales.length)%canales.length;render();preview();}});
-render();preview();
-</script></body></html>
+function play(url){
+ let video=document.getElementById('v');
+ if(Hls.isSupported()){
+  let hls=new Hls();
+  hls.loadSource(url);
+  hls.attachMedia(video);
+  hls.on(Hls.Events.MANIFEST_PARSED,function(){video.play();});
+ } else { video.src=url; video.play(); }
+}
+play('https://nasa.nasawestvalley.com/nasatv-all/nasatv-all.m3u8');
+</script>
+</body>
+</html>
