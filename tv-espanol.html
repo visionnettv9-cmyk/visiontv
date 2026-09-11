@@ -5,32 +5,30 @@
 <title>VISIONTV - TV Español</title>
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial, sans-serif}
 body{background:#000;color:#fff;overflow:hidden;height:100vh}
 #player{width:100vw;height:100vh;position:relative;background:#000}
 #player video{width:100%;height:100%;object-fit:contain;background:#000}
-#sideMenu{position:absolute;left:15px;top:15px;width:360px;max-height:75vh;background:rgba(0,0,0,0.78);backdrop-filter:blur(6px);overflow-y:auto;z-index:10;border:1px solid rgba(255,255,255,0.1)}
-.canal{display:flex;align-items:center;padding:7px 10px;cursor:pointer;gap:10px;font-size:15px}
-.canal.c-logo{width:52px;height:28px;background:#fff;border-radius:2px;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.canal.c-logo img{width:100%;height:100%;object-fit:contain}
+#sideMenu{position:absolute;left:0;top:0;width:320px;height:100%;background:rgba(0,0,0,0.85);backdrop-filter:blur(6px);overflow-y:auto;z-index:10;border-right:1px solid rgba(255,255,255,0.15);padding-top:10px}
+.canal{display:flex;align-items:center;padding:8px 12px;cursor:pointer;gap:10px;font-size:14px;border-bottom:1px solid rgba(255,255,255,0.05)}
+.canal.c-logo{width:52px;height:30px;background:#fff;border-radius:3px;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.canal.c-logo img{width:90%;height:90%;object-fit:contain}
 .canal.activo{background:linear-gradient(90deg,#0d2a8a,#1a6aff);color:#fff}
-.canal.separador{background:#000;color:#ff0000;font-weight:900;justify-content:flex-start;padding-left:12px;margin-top:4px}
-#bottom{position:absolute;left:15px;bottom:15px;right:15px;display:flex;gap:12px;align-items:flex-end;z-index:10}
-.logo-grande{width:260px;height:160px;background:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:4px solid #a020f0;flex-shrink:0;box-shadow:0 0 15px rgba(160,32,240,0.6)}
-.logo-grande img{width:95%;height:95%;object-fit:contain}
-.info-col{flex:1;display:flex;flex-direction:column;gap:8px;margin-bottom:15px}
-.barra-azul{width:100%;background:linear-gradient(90deg,#1a3bb8,#2a5bd8);padding:8px 12px;border-radius:4px;display:flex;align-items:center;gap:10px;border:1px solid #3a6aff}
-.barra-azul.mini-logo{width:70px;height:32px;background:#fff;border-radius:3px;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.barra-azul.mini-logo img{width:100%;height:100%;object-fit:contain}
-.hora{margin-left:auto;font-size:13px;font-weight:700}
-.titulo-canal{font-size:32px;font-weight:300;line-height:1}
-.subtitulo{font-size:14px;color:#ccc}
-#loading{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:20px;z-index:5}
+.canal.separador{background:#111;color:#ff0000;font-weight:900;justify-content:flex-start;padding-left:12px;margin-top:0}
+#bottom{position:absolute;left:340px;bottom:20px;right:20px;display:flex;gap:15px;align-items:flex-end;z-index:10;pointer-events:none}
+.logo-grande{width:180px;height:110px;background:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:3px solid #a020f0;flex-shrink:0;box-shadow:0 0 15px rgba(160,32,240,0.6)}
+.logo-grande img{width:90%;height:90%;object-fit:contain}
+.info-col{flex:1;display:flex;flex-direction:column;gap:8px}
+.barra-azul{width:100%;max-width:600px;background:linear-gradient(90deg,#1a3bb8,#2a5bd8);padding:6px 10px;border-radius:4px;display:flex;align-items:center;gap:10px;border:1px solid #3a6aff;font-size:13px}
+.barra-azul.mini-logo{width:60px;height:28px;background:#fff;border-radius:3px;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.barra-azul.mini-logo img{width:90%;height:90%;object-fit:contain}
+.hora{margin-left:auto;font-size:11px;font-weight:700;white-space:nowrap}
+.titulo-canal{font-size:28px;font-weight:700;line-height:1;text-shadow:2px 2px 4px #000}
+.subtitulo{font-size:13px;color:#ccc;text-shadow:1px 1px 2px #000}
 </style>
 </head>
 <body>
 <div id="player">
-  <div id="loading">Cargando canales...</div>
   <video id="video" autoplay muted playsinline></video>
   <div id="sideMenu"></div>
   <div id="bottom">
@@ -38,11 +36,11 @@ body{background:#000;color:#fff;overflow:hidden;height:100vh}
     <div class="info-col">
       <div class="barra-azul">
         <div class="mini-logo"><img id="miniLogo" src=""></div>
-        <span id="progName" style="font-size:13px">En vivo</span>
+        <span id="progName">En vivo</span>
         <span class="hora" id="hora">--:--</span>
       </div>
-      <div class="titulo-canal" id="canalName">VISIONTV</div>
-      <div class="subtitulo" id="canalDesc">Selecciona un canal</div>
+      <div class="titulo-canal" id="canalName">Cargando...</div>
+      <div class="subtitulo" id="canalDesc">VISIONTV</div>
     </div>
   </div>
 </div>
@@ -52,58 +50,43 @@ let sel = 0;
 let hls = null;
 
 async function cargarCanales(){
-  try{
-    // ESTA ES TU IP QUE YA JALA
-    const res = await fetch('http://192.168.1.2:3000/api/canales');
-    const data = await res.json();
-    // Soporta tanto { "TV-Español": [...] } como array directo
-    CANALES = data["TV-Español"] || data["TV-Espanol"] || data.canales || data;
-    if(!Array.isArray(CANALES) || CANALES.length==0) throw "vacio";
-    document.getElementById('loading').style.display='none';
-    render(); update();
-  }catch(e){
-    document.getElementById('loading').innerText = "Error: No conecta a 192.168.1.2:3000 - Verifica que el server este prendido";
-    console.error(e);
-  }
+  const res = await fetch('http://192.168.1.2:3000/api/canales');
+  const data = await res.json();
+  CANALES = data["TV-Español"] || data;
+  render(); update();
 }
-
 function play(url){
  let v=document.getElementById('video');
- if(hls){hls.destroy(); hls=null;}
+ if(hls){hls.destroy();}
  if(Hls.isSupported()){
-   hls=new Hls({enableWorker:true});
+   hls=new Hls();
    hls.loadSource(url);
    hls.attachMedia(v);
    hls.on(Hls.Events.MANIFEST_PARSED,()=>v.play());
  }else{v.src=url; v.play();}
 }
-
 function render(){
  let m=document.getElementById('sideMenu'); m.innerHTML="";
  CANALES.forEach((c,i)=>{
   if(c.tipo=="sep"){m.innerHTML+=`<div class="canal separador">${c.nombre}</div>`;return}
   let d=document.createElement('div'); d.className='canal'+(i==sel?' activo':'');
-  d.innerHTML=`<div class="c-logo"><img src="${c.logo}" onerror="this.src='https://via.placeholder.com/100x50?text=TV'"></div><span>${c.nombre}</span>`;
+  d.innerHTML=`<div class="c-logo"><img src="${c.logo}" onerror="this.style.display='none'"></div><span>${c.nombre}</span>`;
   d.onclick=()=>{sel=i;update();};
   m.appendChild(d);
  });
 }
-
 function update(){
  let c=CANALES[sel]; if(!c||c.tipo=="sep")return;
  document.getElementById('canalName').innerText=c.nombre;
  document.getElementById('bigLogo').src=c.logo;
  document.getElementById('miniLogo').src=c.logo;
- document.getElementById('canalDesc').innerText=c.nombre + " - En vivo";
  play(c.url); render();
 }
-
 document.addEventListener('keydown',e=>{
- if(e.key=="ArrowDown"){do{sel=(sel+1)%CANALES.length}while(CANALES[sel].tipo=="sep");update()}
- if(e.key=="ArrowUp"){do{sel=(sel-1+CANALES.length)%CANALES.length}while(CANALES[sel].tipo=="sep");update()}
+ if(e.key=="ArrowDown"){sel=(sel+1)%CANALES.length;update()}
+ if(e.key=="ArrowUp"){sel=(sel-1+CANALES.length)%CANALES.length;update()}
 });
 setInterval(()=>{let d=new Date();document.getElementById('hora').innerText=d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+" | "+d.toLocaleDateString()},1000);
-
 cargarCanales();
 </script>
 </body>
