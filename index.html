@@ -23,10 +23,11 @@ body{background:#000;height:100vh;overflow:hidden}
 .filtros button.active{background:#0d5bff;color:#fff;border-color:#0d5bff}
 .resultados{margin-top:16px;flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:4px}
 .item{display:flex;align-items:center;gap:12px;padding:12px 14px;background:#161616;border-radius:10px;border:1px solid #222;color:#ddd;font-size:15px;cursor:pointer}
-.item:hover{background:#1f1f1f;border-color:#444}
-.item.active{background:#0d5bff;color:#fff;border-color:#0d5bff}
-.item span.tipo{font-size:11px;background:#2a2a2a;padding:3px 8px;border-radius:10px;color:#888;margin-left:auto}
-.item.active span.tipo{background:rgba(0,0,0,0.3);color:#fff}
+.item:hover{background:#1f1f1f}
+.teclado-tv{display:flex;flex-direction:column;gap:6px;margin-top:12px;background:#161616;border:1px solid #333;border-radius:12px;padding:12px}
+.fila-teclas{display:flex;gap:6px;justify-content:center}
+.fila-teclas button{background:#2a2a2a;border:1px solid #444;color:#fff;padding:8px 10px;border-radius:8px;min-width:36px;font-size:13px;cursor:pointer}
+.fila-teclas button:focus{ background:#0d5bff; border-color:#fff; outline:none; transform:scale(1.1) }
 </style>
 </head>
 <body>
@@ -34,49 +35,51 @@ body{background:#000;height:100vh;overflow:hidden}
 <div class="container">
 <div class="menu-box">
 <div class="menu">
-<a class="active">🔍 Buscar</a>
-<a>⭐ Favoritos</a>
-<a>📶 TV-Espanol</a>
-<a>📶 TV-English</a>
-<a>🎬 Peliculas</a>
-<a>🎬 Movies</a>
-<a>📺 Series</a>
-<a>📺 Series Sub</a>
-<a>🙂 KidZone</a>
-<a>🏃 Ondeman - Sport</a>
-<a>🏃 Live TV - Sport</a>
-<a>📶 Zona Music</a>
-<a>📶 24/7</a>
-<a>🔞 Adult Live</a>
-<a>🔞 Adult VOD</a>
-<a>⚙️ Configuraciones</a>
+<a class="active">🔍 Buscar</a><a>⭐ Favoritos</a><a>📶 TV-Espanol</a><a>📶 TV-English</a><a>🎬 Peliculas</a><a>🎬 Movies</a><a>📺 Series</a><a>📺 Series Sub</a><a>🙂 KidZone</a><a>🏃 Ondeman - Sport</a><a>🏃 Live TV - Sport</a><a>📶 Zona Music</a><a>📶 24/7</a><a>🔞 Adult Live</a><a>🔞 Adult VOD</a><a>⚙️ Configuraciones</a>
 </div>
 <div class="menu-footer">Cuenta de Usuario: 47810922<br>La cuenta vence el 15/05/2028</div>
 </div>
 
 <div class="buscar-box">
-<div class="search-input">🔍 <input type="text" id="buscador" placeholder="Escribe película, serie o canal..." onkeyup="filtrar()"></div>
-<div class="filtros">
-<button class="active">Todo</button>
-<button>Canales</button>
-<button>Películas</button>
-<button>Series</button>
+<!-- ESTE INPUT SI JALA CON TECLADO FISICO EN PC -->
+<div class="search-input">🔍 <input type="text" id="buscador" placeholder="Escribe película, serie o canal..."></div>
+
+<!-- ESTE TECLADO ES PARA EL CONTROL DE LA TV -->
+<div class="teclado-tv" id="tecladoTV">
+<div class="fila-teclas"><button>A</button><button>B</button><button>C</button><button>D</button><button>E</button><button>F</button><button>G</button><button>H</button><button>I</button><button>J</button></div>
+<div class="fila-teclas"><button>K</button><button>L</button><button>M</button><button>N</button><button>O</button><button>P</button><button>Q</button><button>R</button><button>S</button><button>T</button></div>
+<div class="fila-teclas"><button>U</button><button>V</button><button>W</button><button>X</button><button>Y</button><button>Z</button><button>0</button><button>1</button><button>2</button><button>3</button><button>ESPACIO</button><button>⌫</button></div>
 </div>
+
+<div class="filtros"><button class="active">Todo</button><button>Canales</button><button>Películas</button><button>Series</button></div>
 <div class="resultados" id="lista">
-<div class="item">📶 Antena 3 HD <span class="tipo">TV-Espanol</span></div>
-<div class="item">📶 Telecinco HD <span class="tipo">TV-Espanol</span></div>
-<div class="item">📶 La 1 HD <span class="tipo">TV-Espanol</span></div>
-<div class="item">🎬 Gladiador 2 <span class="tipo">Peliculas</span></div>
-<div class="item">📺 La Casa de Papel <span class="tipo">Series</span></div>
-<div class="item">📶 ESPN Deportes <span class="tipo">Live TV - Sport</span></div>
-<div class="item">📶 Movistar Futbol <span class="tipo">TV-Espanol</span></div>
+<div class="item">📶 Antena 3 HD <span style="margin-left:auto;font-size:11px;background:#2a2a2a;padding:3px 8px;border-radius:10px;color:#888">TV-Espanol</span></div>
+<div class="item">📶 Telecinco HD</div>
+<div class="item">🎬 Gladiador 2</div>
+<div class="item">📺 La Casa de Papel</div>
 </div>
 </div>
 </div>
 
 <script>
-function filtrar(){
-  let txt = document.getElementById('buscador').value.toLowerCase();
+// TECLADO FISICO PC - funciona normal
+const input = document.getElementById('buscador');
+input.addEventListener('input', ()=> filtrar(input.value));
+
+// TECLADO VIRTUAL TV - con control
+document.querySelectorAll('#tecladoTV button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    let t = btn.textContent;
+    if(t === '⌫') input.value = input.value.slice(0,-1);
+    else if(t === 'ESPACIO') input.value += ' ';
+    else input.value += t;
+    filtrar(input.value);
+    input.focus();
+  });
+});
+
+function filtrar(txt){
+  txt = txt.toLowerCase();
   document.querySelectorAll('#lista .item').forEach(i=>{
     i.style.display = i.textContent.toLowerCase().includes(txt) ? 'flex' : 'none';
   });
