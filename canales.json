@@ -1,0 +1,11 @@
+{
+  "categorias": [
+    {"id": "es", "nombre": "TV-Español", "icon": "📡"},
+    {"id": "en", "nombre": "TV-English", "icon": "📡"},
+    {"id": "pelis", "nombre": "Peliculas", "icon": "🎞️"},
+    {"id": "movies", "nombre": "Movies", "icon": "🎞️"},
+    {"id": "series", "nombre": "Series", "icon": "📺"},
+    {"id": "sports", "nombre": "Live TV - Sport", "icon": "🏃"},
+    {"id": "music", "nombre": "Zona Music", "icon": "🎵"}
+  ]
+}
