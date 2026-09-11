@@ -1,15 +1,17 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Referencias del DOM
+  // Elementos DOM
   const menuLinks = document.querySelectorAll("#menu a");
-  const vistaBuscar = document.getElementById("vistaBuscar");
+  const vistaBuscador = document.getElementById("vistaBuscador");
   const vistaFavoritos = document.getElementById("vistaFavoritos");
+  const vistaPreview = document.getElementById("vistaPreview");
   const listaFavoritosContenedor = document.getElementById("listaFavoritos");
   const itemsLista = document.querySelectorAll("#lista .item");
+  const buscadorInput = document.getElementById("buscador");
 
-  // Cargar lista de Favoritos guardados desde localStorage
+  // Estado de Favoritos desde localStorage
   let misFavoritos = JSON.parse(localStorage.getItem("visiontv_favs")) || [];
 
-  // Inicializar items de la lista principal
+  // Inicializar nombres base e íconos de favoritos en la lista principal
   itemsLista.forEach(item => {
     const id = item.dataset.id;
     if (!item.dataset.nombreBase) {
@@ -17,33 +19,87 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     actualizarTextoItem(item, id);
 
-    // Al hacer clic, agregar o quitar de Favoritos
+    // Click o selección de favorito
     item.addEventListener("click", () => {
       toggleFavorito(id);
     });
   });
 
-  // Cambiar entre secciones en el menú izquierdo
+  // NAVEGACIÓN DEL MENÚ IZQUIERDO
   menuLinks.forEach((link, index) => {
+    if (index === 0) link.classList.add("activo"); // Activar 'Buscar' por defecto
+
     link.addEventListener("click", (e) => {
       e.preventDefault();
-      menuLinks.forEach(l => l.classList.remove("active"));
-      link.classList.add("active");
+      menuLinks.forEach(l => l.classList.remove("activo"));
+      link.classList.add("activo");
 
       const texto = link.textContent.trim().toLowerCase();
 
       if (texto.includes("favoritos")) {
-        vistaBuscar.style.display = "none";
+        vistaBuscador.style.display = "none";
+        vistaPreview.style.display = "none";
         vistaFavoritos.style.display = "block";
         cargarVistaFavoritos();
       } else if (texto.includes("buscar")) {
         vistaFavoritos.style.display = "none";
-        vistaBuscar.style.display = "block";
+        vistaPreview.style.display = "block";
+        vistaBuscador.style.display = "block";
+      } else {
+        // Para el resto de opciones del menú
+        vistaFavoritos.style.display = "none";
+        vistaBuscador.style.display = "none";
+        vistaPreview.style.display = "block";
       }
     });
   });
 
-  // Agregar o quitar elemento de favoritos
+  // TECLADO VIRTUAL EN PANTALLA
+  const botonesTeclado = document.querySelectorAll("#tecladoTV button");
+  botonesTeclado.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const valor = btn.textContent.trim();
+      if (valor === "⌫") {
+        buscadorInput.value = buscadorInput.value.slice(0, -1);
+      } else if (valor === "ESPACIO") {
+        buscadorInput.value += " ";
+      } else {
+        buscadorInput.value += valor;
+      }
+      filtrarBusqueda();
+    });
+  });
+
+  // FILTROS (Todo, Canales, Películas, Series)
+  const botonesFiltro = document.querySelectorAll("#filtros button");
+  botonesFiltro.forEach(btn => {
+    btn.addEventListener("click", () => {
+      botonesFiltro.forEach(b => b.classList.remove("activo"));
+      btn.classList.add("activo");
+      filtrarBusqueda();
+    });
+  });
+
+  function filtrarBusqueda() {
+    const texto = buscadorInput.value.toLowerCase().trim();
+    const filtroActivo = document.querySelector("#filtros button.activo")?.dataset.cat || "todo";
+
+    itemsLista.forEach(item => {
+      const nombre = (item.dataset.nombreBase || item.textContent).toLowerCase();
+      const cat = item.dataset.cat;
+
+      const coincideTexto = nombre.includes(texto);
+      const coincideCat = (filtroActivo === "todo" || cat === filtroActivo);
+
+      if (coincideTexto && coincideCat) {
+        item.style.display = "block";
+      } else {
+        item.style.display = "none";
+      }
+    });
+  }
+
+  // AGREGAR / QUITAR FAVORITO
   function toggleFavorito(id) {
     if (misFavoritos.includes(id)) {
       misFavoritos = misFavoritos.filter(favId => favId !== id);
@@ -52,14 +108,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     localStorage.setItem("visiontv_favs", JSON.stringify(misFavoritos));
 
-    // Actualizar texto del item en la lista principal
+    // Actualizar elemento en lista principal
     itemsLista.forEach(item => {
       if (item.dataset.id === id) {
         actualizarTextoItem(item, id);
       }
     });
 
-    // Si estamos en la pestaña de Favoritos, recargar la vista
+    // Si está activa la vista de favoritos, actualizarla
     if (vistaFavoritos.style.display === "block") {
       cargarVistaFavoritos();
     }
@@ -74,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Cargar de forma independiente todos los items guardados
+  // CARGAR LA VISTA DE FAVORITOS (Sin importar si están ocultos por búsqueda)
   function cargarVistaFavoritos() {
     listaFavoritosContenedor.innerHTML = '';
     let guardados = 0;
