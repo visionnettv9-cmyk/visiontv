@@ -1,28 +1,59 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>VISION TV - FIFA 2026</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VISIONTV</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#000;color:#fff;font-family:Arial Black,Arial,sans-serif}
-.top{background:#000;padding:14px 30px;display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #e50914;position:fixed;width:100%;z-index:10;top:0}
-.logo{font-size:28px;color:#e50914} .logo span{color:#fff}
-.menu{display:flex;gap:22px} .menu a{color:#fff;text-decoration:none;font-size:13px;font-weight:700}
-.menu a.active{color:#e50914;border-bottom:2px solid #e50914}
-.hero{height:100vh;background:linear-gradient(90deg,#000 0%,rgba(0,0,0,0.6) 45%,rgba(0,0,0,0.1) 100%), url('https://raw.githubusercontent.com/visionnettv9-cmyk/visiontv/main/hero.jpg');background-size:cover;background-position:center;display:flex;align-items:center;padding:0 5%;position:relative}
-.content{margin-top:60px;max-width:550px}
-.badge{background:#e50914;padding:8px 16px;font-size:11px;font-weight:900;display:inline-block;margin-bottom:20px;box-shadow:0 0 15px #e50914}
-.content h1{font-size:72px;line-height:0.9;text-transform:uppercase}
-.content h1 span{color:#e50914}
-.content p{margin-top:18px;color:#ddd;font-size:15px;font-family:Arial,sans-serif;line-height:1.4}
-.btn{margin-top:28px;background:#e50914;border:none;color:#fff;padding:16px 40px;font-weight:900;font-size:17px;border-radius:4px;cursor:pointer;box-shadow:0 5px 25px rgba(229,9,20,0.7)}
-.zigzag{position:absolute;bottom:0;left:0;width:100%;height:22px;background:linear-gradient(135deg,#e50914 25%,transparent 25%) -11px 0,linear-gradient(225deg,#e50914 25%,transparent 25%) -11px 0;background-size:22px 22px}
+body{background:#000;color:#fff;font-family:Arial,sans-serif}
+.top{background:#000;padding:12px 30px;display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #e50914;position:fixed;width:100%;z-index:20;top:0}
+.logo{font-size:26px;color:#e50914;font-weight:900} .logo span{color:#fff}
+.btn{background:#e50914;border:none;color:#fff;padding:14px 36px;font-weight:900;border-radius:4px;cursor:pointer}
+.hero{height:100vh;background:linear-gradient(90deg,#000 0%,rgba(0,0,0,0.6) 45%,rgba(0,0,0,0.1) 100%), url('./hero.jpg');background-size:cover;background-position:center;display:flex;align-items:center;padding:0 5%}
+.app{height:100vh;padding-top:56px;display:flex;background:repeating-linear-gradient(115deg,#080808 0 18px,#140000 18px 20px,#000 20px 40px)}
+.sidebar{width:300px;background:rgba(0,0,0,0.85);margin:15px;border:1px solid #222;border-radius:12px;padding:10px 0}
+.item{padding:12px 18px;display:flex;gap:10px;cursor:pointer;font-size:15px;border-radius:6px;margin:2px 8px} .item.active,.item:hover{background:#1e5cff}
+.preview{flex:1;margin:15px;background:#111;border-radius:12px;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center}
+.preview img{width:100%;height:100%;object-fit:cover;opacity:0.7}
+.preview-text{position:absolute;font-size:38px;font-weight:900}
 </style>
 </head>
 <body>
-<div class="top"><div class="logo">VISION<span>TV</span></div><div class="menu"><a class="active">HOME</a><a>EN VIVO</a><a>PELICULAS</a><a>SERIES</a><a>FIFA 2026</a></div></div>
-<div class="hero"><div class="content"><div class="badge">FIFA WORLD CUP 2026 • MEXICO - USA - CANADA • EN VIVO</div><h1>TU<br><span>VISION</span><br>DEL FUTBOL</h1><p>El mejor contenido en un solo lugar. Optimizado para Firestick y Smart TV. Vive el Mundial como nunca.</p><button class="btn">▶ VER AHORA</button></div><div class="zigzag"></div></div>
+<div class="top"><div class="logo">VISION<span>TV</span></div><div style="font-size:12px">APP_URL: visionnettv9-cmyk.github.io/visiontv/</div></div>
+
+<div id="home" class="hero">
+<div style="max-width:500px;margin-top:60px">
+<div style="background:#e50914;padding:6px 12px;display:inline-block;font-size:10px;font-weight:900;margin-bottom:15px">FIFA 2026 • EN VIVO</div>
+<h1 style="font-size:62px;line-height:0.9;font-family:Arial Black">TU<br><span style="color:#e50914">VISION</span><br>DEL FUTBOL</h1>
+<button class="btn" style="margin-top:20px" onclick="showApp()">▶ ENTRAR AL MENU</button>
+</div>
+</div>
+
+<div id="app" class="app" style="display:none">
+<div class="sidebar" id="menu"></div>
+<div class="preview">
+<img id="previewImg" src="./hero.jpg">
+<div class="preview-text" id="previewText">TV-Español</div>
+</div>
+</div>
+
+<script>
+function showApp(){document.getElementById('home').style.display='none';document.getElementById('app').style.display='flex';loadMenu();}
+async function loadMenu(){
+ let data = await fetch('./canales.json').then(r=>r.json());
+ let html='';
+ data.categorias.forEach((c,i)=>{
+  html+=`<div class="item ${i==0?'active':''}" onclick="selectCat(this,'${c.nombre}')"><span>${c.icon}</span> ${c.nombre}</div>`;
+ });
+ document.getElementById('menu').innerHTML=html;
+}
+function selectCat(el,nombre){
+ document.querySelectorAll('.item').forEach(i=>i.classList.remove('active'));
+ el.classList.add('active');
+ document.getElementById('previewText').innerText=nombre;
+ // AQUI LUEGO CAMBIAS LA PORTADA SEGUN CATEGORIA:
+ // document.getElementById('previewImg').src = './portadas/'+nombre+'.jpg'
+}
+</script>
 </body>
 </html>
