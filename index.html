@@ -141,10 +141,12 @@ body{background:#000;height:100vh;overflow:hidden}
 
     <!-- RESULTADOS CON ATRIBUTOS DE CATEGORÍA -->
     <div class="resultados" id="lista">
-      <div class="item" data-cat="canales">📺 Antena 3 HD</div>
+      <div class="item" data-cat="series">📺 Teresa (2010)</div>
+      <div class="item" data-cat="peliculas">🎬 Terremoto en LA</div>
       <div class="item" data-cat="canales">📺 Telecinco HD</div>
+      <div class="item" data-cat="canales">📺 Antena 3 HD</div>
+      <div class="item" data-cat="series">📺 La Historia de Teresa</div>
       <div class="item" data-cat="peliculas">🎬 Gladiador 2</div>
-      <div class="item" data-cat="series">📺 The Last of Us</div>
       <div class="item" data-cat="peliculas">🎬 Avatar 2</div>
     </div>
   </div>
@@ -155,20 +157,27 @@ body{background:#000;height:100vh;overflow:hidden}
 <script>
 const menuItems=document.querySelectorAll('#menu a'), boxInput=document.getElementById('boxInput'), tecladoBtns=document.querySelectorAll('#tecladoTV button'), filtroBtns=document.querySelectorAll('#filtros button'), buscador=document.getElementById('buscador');
 const vistaPreview=document.getElementById('vistaPreview'), vistaBuscador=document.getElementById('vistaBuscador');
+const listaContenedor = document.getElementById('lista');
 
-// Obtiene únicamente los elementos visibles en la pantalla (después del filtro de texto y categoría)
+// Obtiene únicamente los elementos visibles
 const getVisibles = () => Array.from(document.querySelectorAll('#lista .item')).filter(el => el.style.display !== 'none');
 
 let zona='menu', mPos=0, tPos=0, fPos=0, lPos=0;
 let enModoBuscador = false;
 let categoriaActual = 'todo';
 
+// Función para obtener texto limpio ignorando emojis del inicio al comparar
+function getTextoLimpio(el) {
+  return el.textContent.replace(/^[^\wáéíóúñ]+/i, '').trim().toLowerCase();
+}
+
 function filtrarResultados(){
   const query = buscador.value.toLowerCase().trim();
-  const todosLosItems = document.querySelectorAll('#lista .item');
+  const todosLosItems = Array.from(document.querySelectorAll('#lista .item'));
 
+  // 1. Ocultar o Mostrar según Categoría y Búsqueda
   todosLosItems.forEach(item => {
-    const texto = item.textContent.toLowerCase();
+    const texto = getTextoLimpio(item);
     const catItem = item.dataset.cat;
     
     const coincideTexto = texto.includes(query);
@@ -181,7 +190,30 @@ function filtrarResultados(){
     }
   });
 
-  // Ajustar posición si la lista visible se redujo
+  // 2. Ordenamiento inteligente (Coincidencias iniciales primero + Orden A-Z)
+  const itemsVisibles = getVisibles();
+
+  itemsVisibles.sort((a, b) => {
+    const textoA = getTextoLimpio(a);
+    const textoB = getTextoLimpio(b);
+
+    if (query !== '') {
+      const empiezaA = textoA.startsWith(query);
+      const empiezaB = textoB.startsWith(query);
+
+      // Si A empieza con el texto y B no, A va primero
+      if (empiezaA && !empiezaB) return -1;
+      if (!empiezaA && empiezaB) return 1;
+    }
+
+    // Si ambos empiezan igual o no hay búsqueda, se ordenan A-Z
+    return textoA.localeCompare(textoB, 'es', { sensitivity: 'base' });
+  });
+
+  // Reorganizar visualmente en el DOM
+  itemsVisibles.forEach(item => listaContenedor.appendChild(item));
+
+  // Ajustar posición del cursor si la lista cambió
   if (lPos >= getVisibles().length) {
     lPos = Math.max(0, getVisibles().length - 1);
   }
@@ -229,6 +261,7 @@ function abrirBuscador(){
   vistaPreview.style.display = 'none';
   vistaBuscador.style.display = 'flex';
   zona = 'input';
+  filtrarResultados();
   enfocar();
 }
 
@@ -343,6 +376,8 @@ document.addEventListener('keydown', e => {
   enfocar();
 }); 
 
+// Inicializa el orden alfabético inicial al cargar la página
+filtrarResultados();
 enfocar();
 </script>
 </body>
