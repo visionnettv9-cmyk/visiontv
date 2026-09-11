@@ -2,135 +2,94 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>TV Español - VISIONTV</title>
+<title>History - VISIONTV</title>
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
-body{background:#0a0a0a;color:#fff;overflow:hidden}
-.guia{width:100vw;height:100vh;background:radial-gradient(ellipse at center,#1a1a1a 0%,#000 100%);display:flex;flex-direction:column}
-.preview-area{height:42vh;display:flex;padding:15px;gap:15px;flex-shrink:0}
-.video-preview{width:32%;background:#000;border:1px solid #333;position:relative}
-.video-preview video{width:100%;height:100%;object-fit:cover}
-.info-top{flex:1;padding:10px;position:relative}
-.info-top h2{font-size:26px;font-weight:800}
-.logo-box{position:absolute;right:20px;top:15px;width:120px;height:120px;background:#fff;border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:3px solid #a000ff}
-.logo-box img{width:90%;height:90%;object-fit:contain}
-.timeline{display:flex;background:#b30000;height:30px;align-items:center;font-size:14px;font-weight:700;flex-shrink:0}
-.timeline div{flex:1;text-align:center;border-right:1px solid rgba(255,255,255,.2)}
-.lista{flex:1;overflow-y:auto;background:rgba(20,20,20,.9)}
-.canal{display:flex;align-items:center;padding:12px 15px;border-bottom:1px solid rgba(255,255,255,0.06);cursor:pointer;gap:12px;background:rgba(0,0,0,0.15)}
-.canal.activo{background:rgba(0,102,255,0.65)!important;backdrop-filter:blur(8px)}
-.c-logo{width:50px;height:32px;background:#fff;border-radius:4px;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0}
-.c-logo img{width:100%;height:100%;object-fit:contain;padding:2px}
-.c-name{width:160px;font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 1px 3px rgba(0,0,0,0.8)}
-.c-prog{flex:1;color:#aaa;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 1px 2px rgba(0,0,0,0.8)}
-#player{position:fixed;top:0;left:0;width:100vw;height:100vh;background:#000;display:none;z-index:100}
-#player video{width:100%;height:100%}
-.infologo{width:140px;height:85px;background:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:4px solid #ff00ff;flex-shrink:0}
-.infologo img{width:90%;height:90%;object-fit:contain}
-.bar-info{flex:1;background:linear-gradient(90deg,rgba(0,0,255,0.55),rgba(255,0,255,0.55));backdrop-filter:blur(12px);padding:12px 15px;border-radius:8px;display:flex;justify-content:space-between;align-items:center}
-
-/* FIX: ya no tapa */
-#sideMenu{position:absolute;left:0;top:0;width:380px;height:100%;background:rgba(0,0,0,0.42);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:none;padding:0;padding-bottom:110px;overflow-y:auto;border-right:1px solid rgba(255,255,255,0.12);z-index:102}
-#infobar{position:absolute;bottom:15px;left:20px;right:20px;display:none;align-items:center;gap:15px;z-index:200;background:transparent;transition:all 0.2s}
-#infobar.conMenu{left:400px}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial, sans-serif}
+body{background:#000;color:#fff;overflow:hidden;height:100vh}
+#player{width:100vw;height:100vh;position:relative;background:#000}
+#player video{width:100%;height:100%;object-fit:cover}
+#sideMenu{position:absolute;left:15px;top:15px;width:360px;max-height:75vh;background:rgba(0,0,0,0.78);backdrop-filter:blur(6px);overflow-y:auto;z-index:10;border:1px solid rgba(255,255,255,0.1)}
+.canal{display:flex;align-items:center;padding:7px 10px;cursor:pointer;gap:10px;font-size:15px}
+.canal.c-logo{width:52px;height:28px;background:#fff;border-radius:2px;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.canal.c-logo img{width:100%;height:100%;object-fit:contain}
+.canal.activo{background:linear-gradient(90deg,#0d2a8a,#1a6aff);color:#fff}
+.canal.separador{background:#000;color:#ff0000;font-weight:900;justify-content:flex-start;padding-left:12px;margin-top:4px}
+#bottom{position:absolute;left:15px;bottom:15px;right:15px;display:flex;gap:12px;align-items:flex-end;z-index:10}
+.logo-grande{width:260px;height:160px;background:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:4px solid #a020f0;flex-shrink:0;box-shadow:0 0 15px rgba(160,32,240,0.6)}
+.logo-grande img{width:95%;height:95%;object-fit:contain}
+.info-col{flex:1;display:flex;flex-direction:column;gap:8px;margin-bottom:15px}
+.barra-azul{width:100%;background:linear-gradient(90deg,#1a3bb8,#2a5bd8);padding:8px 12px;border-radius:4px;display:flex;align-items:center;gap:10px;border:1px solid #3a6aff}
+.barra-azul.mini-logo{width:70px;height:32px;background:#fff;border-radius:3px;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.barra-azul.mini-logo img{width:100%;height:100%;object-fit:contain}
+.hora{margin-left:auto;font-size:13px;font-weight:700}
+.titulo-canal{font-size:32px;font-weight:300;line-height:1}
+.subtitulo{font-size:14px;color:#ccc}
 </style>
 </head>
 <body>
-<div class="guia" id="guia">
-  <div class="preview-area">
-    <div class="video-preview"><video id="prevVideo" autoplay muted></video></div>
-    <div class="info-top">
-      <h2 id="chName">Cargando...</h2>
-      <p style="color:#888;margin-top:6px;font-size:14px">VISIONTV • Sin información</p>
-      <div class="logo-box"><img id="logoBox" src=""></div>
-      <p style="position:absolute;bottom:10px;color:#666;font-size:12px">Presiona ENTER para pantalla completa</p>
+<div id="player">
+  <video id="video" autoplay muted></video>
+  <div id="sideMenu"></div>
+  <div id="bottom">
+    <div class="logo-grande"><img id="bigLogo" src=""></div>
+    <div class="info-col">
+      <div class="barra-azul">
+        <div class="mini-logo"><img id="miniLogo" src=""></div>
+        <span id="progName" style="font-size:13px">Sin información</span>
+        <span class="hora" id="hora">02:11 AM | 11/09/2026</span>
+      </div>
+      <div class="titulo-canal" id="canalName">History</div>
+      <div class="subtitulo" id="canalDesc">Sin información</div>
     </div>
   </div>
-  <div class="timeline"><div>Hoy</div><div>01:30 AM</div><div>02:00 AM</div><div>02:30 AM</div></div>
-  <div class="lista" id="listaCanales"></div>
-</div>
-<div id="player">
-  <video id="fullVideo" autoplay></video>
-  <div id="infobar">
-    <div class="infologo"><img id="infoLogo" src=""></div>
-    <div class="bar-info"><div><div id="infoName" style="font-weight:800">Canal</div><small>VISIONTV • HD</small></div><span id="hora" style="font-weight:700"></span></div>
-  </div>
-  <div id="sideMenu"><div id="sideList"></div></div>
 </div>
 <script>
-const CANALES = {
- "TV-Español": [
-  {nombre:"Azteca 7", logo:"https://upload.wikimedia.org/wikipedia/commons/2/2d/Tv_Azteca_7_logo.png", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
-  {nombre:"Canal 5", logo:"https://upload.wikimedia.org/wikipedia/commons/4/48/Canal_5_logo.png", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
-  {nombre:"Las Estrellas", logo:"https://upload.wikimedia.org/wikipedia/commons/6/6b/Las_Estrellas_logo.png", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
-  {nombre:"TUDN", logo:"https://upload.wikimedia.org/wikipedia/commons/3/32/TUDN_logo.png", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
- ],
- "Live TV - Sport": [
-  {nombre:"ESPN", logo:"https://upload.wikimedia.org/wikipedia/commons/2/2f/ESPN_wordmark.svg", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
-  {nombre:"Fox Sports", logo:"https://upload.wikimedia.org/wikipedia/commons/9/94/Fox_Sports_logo.svg", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
- ],
- "Peliculas": [
-  {nombre:"Avengers Endgame", logo:"https://image.tmdb.org/t/p/w300/or06FN3Dka5tukK1e9sl16pB3iy.jpg", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
-  {nombre:"Mario Bros", logo:"https://image.tmdb.org/t/p/w300/qNBAXBIQlnY5Db4Cqe2zLxvUW1x.jpg", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
- ]
-};
-let canales = [...CANALES["TV-Español"],...CANALES["Live TV - Sport"],...CANALES["Peliculas"]];
-let sel=0,state=0;
-function playHLS(video, url){
- if(Hls.isSupported()){ let hls=new Hls(); hls.loadSource(url); hls.attachMedia(video); }
- else { video.src=url; }
+const CANALES = [
+ {nombre:"Discovery Tlc", logo:"https://upload.wikimedia.org/wikipedia/commons/5/5a/TLC_logo.svg", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
+ {nombre:"Discovery Theater", logo:"https://via.placeholder.com/100x50?text=THEATER", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
+ {nombre:"Discovery Science", logo:"https://upload.wikimedia.org/wikipedia/commons/3/33/Discovery_Science_logo.png", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
+ {nombre:"Discovery HH", logo:"https://via.placeholder.com/100x50?text=h%26h", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
+ {nombre:"Discovery World", logo:"https://via.placeholder.com/100x50?text=world", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
+ {nombre:"History", logo:"https://upload.wikimedia.org/wikipedia/commons/7/7a/History_logo.svg", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
+ {nombre:"History 2", logo:"https://via.placeholder.com/100x50?text=H2", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
+ {nombre:"Discovery ID", logo:"https://via.placeholder.com/100x50?text=ID", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
+ {nombre:"LifeTime", logo:"https://via.placeholder.com/100x50?text=Lifetime", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
+ {nombre:"Nat Geo", logo:"https://upload.wikimedia.org/wikipedia/commons/f/f2/Nat_Geo_logo.svg", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
+ {nombre:"Nat Geo Wild", logo:"https://upload.wikimedia.org/wikipedia/commons/3/30/Nat_Geo_Wild_logo.svg", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
+ {tipo:"sep", nombre:"DEPORTES"},
+ {nombre:"Aym Sports", logo:"https://via.placeholder.com/100x50?text=Aym", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
+ {nombre:"Bein Sport N", logo:"https://via.placeholder.com/100x50?text=beIN", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
+];
+let sel=5;
+function play(url){
+ let v=document.getElementById('video');
+ if(Hls.isSupported()){let h=new Hls();h.loadSource(url);h.attachMedia(v);}else{v.src=url;}
 }
 function render(){
- let lista=document.getElementById('listaCanales');
- lista.innerHTML="";
- canales.forEach((c,i)=>{
-  let d=document.createElement('div');
-  d.className='canal'+(i==sel?' activo':'');
-  d.innerHTML=`<div class="c-logo"><img src="${c.logo}" onerror="this.src='https://via.placeholder.com/80x50?text=TV'"></div><div class="c-name">${c.nombre}</div><div class="c-prog">No hay información</div>`;
-  d.onclick=()=>{ sel=i; render(); preview(); enterGuia(); };
-  lista.appendChild(d);
+ let m=document.getElementById('sideMenu'); m.innerHTML="";
+ CANALES.forEach((c,i)=>{
+  if(c.tipo=="sep"){m.innerHTML+=`<div class="canal separador">${c.nombre}</div>`;return}
+  let d=document.createElement('div'); d.className='canal'+(i==sel?' activo':'');
+  d.innerHTML=`<div class="c-logo"><img src="${c.logo}"></div><span>${c.nombre}</span>`;
+  d.onclick=()=>{sel=i;update();};
+  m.appendChild(d);
  });
- document.getElementById('sideList').innerHTML=document.getElementById('listaCanales').innerHTML;
 }
-function preview(){
- let c=canales[sel];
- document.getElementById('chName').innerText=c.nombre;
- document.getElementById('logoBox').src=c.logo;
- playHLS(document.getElementById('prevVideo'), c.url);
-}
-function enterGuia(){
- let c=canales[sel];
- let info=document.getElementById('infobar');
- if(state==0){
-  document.getElementById('guia').style.display='none';
-  document.getElementById('player').style.display='block';
-  document.getElementById('infoName').innerText=c.nombre;
-  document.getElementById('infoLogo').src=c.logo;
-  playHLS(document.getElementById('fullVideo'), c.url);
-  state=1;
- } else if(state==1){
-  info.style.display='flex';
-  info.classList.remove('conMenu');
-  state=2;
- } else if(state==2){
-  document.getElementById('sideMenu').style.display='block';
-  info.classList.add('conMenu');
-  state=3;
- }
+function update(){
+ let c=CANALES[sel]; if(!c||c.tipo=="sep")return;
+ document.getElementById('canalName').innerText=c.nombre;
+ document.getElementById('bigLogo').src=c.logo;
+ document.getElementById('miniLogo').src=c.logo;
+ document.getElementById('progName').innerText="Sin información";
+ play(c.url); render();
 }
 document.addEventListener('keydown',e=>{
- if(e.key=='Enter') enterGuia();
- if(e.key=='Escape'){
-  if(state==3){document.getElementById('sideMenu').style.display='none';document.getElementById('infobar').classList.remove('conMenu');state=2;return}
-  if(state==2){document.getElementById('infobar').style.display='none';state=1;return}
-  if(state==1){document.getElementById('player').style.display='none';document.getElementById('guia').style.display='flex';state=0;preview();return}
- }
- if(e.key=='ArrowDown'&&state!=1){ sel=(sel+1)%canales.length; render(); preview(); }
- if(e.key=='ArrowUp'&&state!=1){ sel=(sel-1+canales.length)%canales.length; render(); preview(); }
+ if(e.key=="ArrowDown"){do{sel=(sel+1)%CANALES.length}while(CANALES[sel].tipo=="sep");update()}
+ if(e.key=="ArrowUp"){do{sel=(sel-1+CANALES.length)%CANALES.length}while(CANALES[sel].tipo=="sep");update()}
 });
-setInterval(()=>{ let h=document.getElementById('hora'); if(h) h.innerText=new Date().toLocaleString(); },1000);
-render(); preview();
+setInterval(()=>{let d=new Date();document.getElementById('hora').innerText=d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+" | "+d.toLocaleDateString()},1000);
+render(); update();
 </script>
 </body>
 </html>
