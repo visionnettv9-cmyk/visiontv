@@ -7,18 +7,19 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
 body{background:#000;min-height:100vh;overflow:hidden}
-.bg{position:fixed;inset:0;background:linear-gradient(110deg,#000 0%,#1a0000 30%,#000 60%), repeating-linear-gradient(120deg, transparent 0 2px, rgba(255,0,0,0.15) 2px 4px);z-index:-1}
-.bg::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-30deg, transparent 0 80px, rgba(255,0,0,0.3) 80px 82px)}
-.container{display:flex;height:100vh;padding:20px;gap:20px}
-.menu{width:310px;background:rgba(0,0,0,0.75);border:1px solid #333;border-radius:15px;padding:15px 10px;backdrop-filter:blur(10px)}
-.menu a{display:flex;align-items:center;gap:8px;padding:8px 12px;color:#ccc;text-decoration:none;font-size:18px;border-radius:6px}
-.menu a:hover{color:#fff;background:rgba(255,255,255,0.1)}
-.menu a.active{background:#0055ff;color:#fff;width:130%;position:relative;left:-10px;padding-left:22px;font-weight:bold;box-shadow:0 0 20px rgba(0,85,255,0.6)}
-.portada{flex:1;background:#000;border:2px solid #333;border-radius:10px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
-/* PARA CAMBIAR LA IMAGEN, CAMBIA LA URL DE ABAJO O SUBE UN ARCHIVO LLAMADO hero.jpg */
-.portada{background-image:url('hero.jpg');background-size:cover;background-position:center;background-color:#000}
-.portada.empty::after{content:'PORTADA NEGRA - Sube tu imagen como hero.jpg';color:#555;font-size:14px}
-.footer{position:fixed;bottom:15px;left:20px;right:20px;display:flex;justify-content:space-between;align-items:flex-end;color:#ccc;font-size:13px}
+.bg{position:fixed;inset:0;background:#000;z-index:-1}
+.bg::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-30deg, transparent 0 80px, rgba(255,0,0,0.35) 80px 82px, transparent 82px 160px)}
+.container{display:flex;height:100vh;padding:18px;gap:18px}
+.menu{width:310px;background:rgba(10,10,10,0.9);border:1px solid #333;border-radius:15px;padding:15px 10px}
+.menu a{display:flex;align-items:center;gap:8px;padding:9px 12px;color:#bbb;text-decoration:none;font-size:17px;border-radius:6px;margin:2px 0}
+.menu a:hover{color:#fff;background:rgba(255,255,255,0.08)}
+.menu a.active{background:#0055ff;color:#fff;width:calc(100% + 20px);position:relative;left:-10px;padding-left:22px;font-weight:bold;box-shadow:0 0 20px rgba(0,85,255,0.7)}
+.portada{flex:1;background:#000;border:1px solid #333;border-radius:12px;overflow:hidden;background-size:cover;background-position:center}
+/* CAMBIA TU PORTADA AQUI - sube una imagen llamada hero.jpg a tu repo */
+.portada{background-image:url('hero.jpg');background-color:#000}
+.footer{position:fixed;bottom:12px;left:20px;right:20px;display:flex;justify-content:space-between;align-items:flex-end;color:#aaa;font-size:12px;pointer-events:none}
+.footer b{font-size:22px;color:#fff;letter-spacing:1px}
+.footer b span{color:#ff0000}
 </style>
 </head>
 <body>
@@ -26,7 +27,7 @@ body{background:#000;min-height:100vh;overflow:hidden}
 <div class="container">
 <div class="menu">
 <a href="#">🔍 Buscar</a>
-<a href="#">⭐ Favoritos</a>
+<a href="#" style="background:rgba(255,255,255,0.08)">⭐ Favoritos</a>
 <a href="tv-espanol.html" class="active">📶 TV-Espanol</a>
 <a href="tv-english.html">📶 TV-English</a>
 <a href="peliculas.html">🎞️ Peliculas</a>
@@ -46,10 +47,7 @@ body{background:#000;min-height:100vh;overflow:hidden}
 </div>
 <div class="footer">
 <div>Cuenta de Usuario: visionnettv9-cmyk<br>La cuenta vence el 15/05/2028</div>
-<div style="display:flex;gap:10px;align-items:center">
-<span style="background:#fff;padding:5px;border-radius:4px">ANDROID fire tv mi Roku</span>
-<b style="font-size:22px">VISION<span style="color:red">TV</span></b>
-</div>
+<div><b>VISION<span>TV</span></b></div>
 </div>
 </body>
 </html>
