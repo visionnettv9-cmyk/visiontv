@@ -10,36 +10,33 @@ body{background:#000;height:100vh;overflow:hidden}
 .fondo{position:fixed;inset:0;z-index:-1;background:repeating-linear-gradient(-55deg, transparent 0 18px, rgba(180,0,0,0.9) 18px 20px, transparent 20px 38px, rgba(255,0,0,0.7) 38px 40px)}
 .container{display:flex;padding:12px;gap:12px;height:100vh}
 
-.menu-box{width:340px;height:calc(100vh - 24px);border:1px solid #666;border-radius:18px;background:#0e0e0e;padding:18px 6px 0 6px;display:flex;flex-direction:column;overflow:hidden}
-.menu{flex:1;overflow-y:auto;overflow-x:visible;padding:6px 10px 6px 6px}
+.menu-box{width:340px;height:calc(100vh - 24px);border:1px solid #666;border-radius:18px;background:#0e0e0e;padding:12px 6px 0 6px;display:flex;flex-direction:column;overflow:hidden}
+.menu{flex:1;overflow-y:auto;overflow-x:visible;padding:2px 8px}
 .menu::-webkit-scrollbar{width:0;display:none}
 .menu{scrollbar-width:none}
 
-/* Espacio reducido entre renglones del menú */
-.menu a{display:flex;align-items:center;gap:10px;padding:6px 12px;color:#fff;text-decoration:none;font-size:16px;border-radius:12px;cursor:pointer;border:2px solid transparent;transition:all 0.18s ease;margin:1px 0}
+.menu a{display:flex;align-items:center;gap:10px;padding:4px 10px;color:#fff;text-decoration:none;font-size:15px;line-height:1.2;border-radius:8px;cursor:pointer;border:2px solid transparent;transition:all 0.18s ease;margin:1px 0}
 
-/* DONDE ESTAS - YA SIN AZUL, SOLO GRANDE */
 .menu a.activo{
   background:#222!important;
   color:#fff!important;
-  transform:scale(1.06);
+  transform:scale(1.03);
   border-color:#333!important;
   font-weight:700;
-  box-shadow:0 2px 10px rgba(0,0,0,0.8);
+  box-shadow:0 2px 8px rgba(0,0,0,0.8);
 }
 
-/* A DONDE VAS - MAS GRANDE + GLOW BLANCO COMO EN TU CAPTURA */
 .menu a.foco{
   background:#2c2c2c!important;
   color:#fff!important;
-  transform:scale(1.1);
+  transform:scale(1.05);
   border-color:#fff!important;
-  box-shadow:0 0 12px #fff, 0 0 25px rgba(255,255,255,0.5)!important;
+  box-shadow:0 0 12px #fff, 0 0 20px rgba(255,255,255,0.5)!important;
   z-index:10;
   position:relative;
 }
 
-.menu-footer{padding:15px 10px;color:#888;font-size:11px;border-top:1px solid #222;margin-top:10px;flex-shrink:0}
+.menu-footer{padding:10px;color:#888;font-size:11px;border-top:1px solid #222;margin-top:6px;flex-shrink:0}
 
 .buscar-box{flex:1;height:calc(100vh - 24px);background:#0e0e0e;border:1px solid #666;border-radius:18px;padding:18px;display:flex;flex-direction:column;overflow:hidden}
 .search-input{display:flex;align-items:center;background:#1c1c1c;border:2px solid #333;border-radius:12px;padding:12px 15px;gap:10px;transition:0.18s}
@@ -47,20 +44,20 @@ body{background:#000;height:100vh;overflow:hidden}
 .search-input.foco{border-color:#fff!important;box-shadow:0 0 15px #fff!important;transform:scale(1.02)}
 
 .filtros{display:flex;gap:8px;margin-top:14px}
-.filtros button{background:#1e1e1e;border:2px solid #333;color:#fff;padding:6px 14px;border-radius:20px;transition:0.18s}
+.filtros button{background:#1e1e1e;border:2px solid #333;color:#fff;padding:6px 14px;border-radius:20px;transition:0.18s;cursor:pointer}
 .filtros button.activo{background:#222;color:#fff;border-color:#555;transform:scale(1.08)}
 .filtros button.foco{border-color:#fff!important;box-shadow:0 0 12px #fff!important;transform:scale(1.12);color:#fff!important}
 
 .resultados{margin-top:16px;flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:6px}
 .resultados::-webkit-scrollbar{display:none}
 .resultados{scrollbar-width:none}
-.item{padding:12px 14px;background:#161616;border-radius:10px;border:2px solid #222;color:#fff;transition:0.18s}
+.item{padding:12px 14px;background:#161616;border-radius:10px;border:2px solid #222;color:#fff;transition:0.18s;cursor:pointer}
 .item.activo{background:#222!important;color:#fff!important;transform:scale(1.03);border-color:#444!important}
 .item.foco{border-color:#fff!important;box-shadow:0 0 12px #fff!important;transform:scale(1.06);color:#fff!important}
 
 .teclado-tv{display:flex;flex-direction:column;gap:6px;margin-top:12px;background:#161616;border-radius:12px;padding:12px}
 .fila-teclas{display:flex;gap:6px;justify-content:center}
-.fila-teclas button{background:#2a2a2a;border:2px solid #444;color:#fff;padding:8px 10px;border-radius:8px;min-width:36px;transition:0.18s}
+.fila-teclas button{background:#2a2a2a;border:2px solid #444;color:#fff;padding:8px 10px;border-radius:8px;min-width:36px;transition:0.18s;cursor:pointer}
 .fila-teclas button.foco{border-color:#fff!important;box-shadow:0 0 12px #fff!important;transform:scale(1.2);background:#fff!important;color:#000!important}
 </style>
 </head>
@@ -69,7 +66,7 @@ body{background:#000;height:100vh;overflow:hidden}
 <div class="container">
 <div class="menu-box">
 <div class="menu" id="menu">
-<a>🔍 Buscar</a><a>⭐ Favoritos</a><a>📶 TV-Espanol</a><a>📶 TV-English</a><a>🎬 Peliculas</a><a>🎬 Movies</a><a>📺 Series</a><a>📺 Series Sub</a><a>🙂 KidZone</a><a>🏃 Ondeman - Sport</a><a>🏃 Live TV - Sport</a><a>📶 Zona Music</a><a>📶 24/7</a><a>🔞 Adult Live</a><a>🔞 Adult VOD</a><a>⚙️ Configuraciones</a>
+<a>🔍 Buscar</a><a>⭐ Favoritos</a><a>📶 TV-Espanol</a><a>📶 TV-English</a><a>🎬 Peliculas</a><a>🎬 Movies</a><a>📺 Series</a><a>📺 Series Sub</a><a>🙂 KidZone</a><a>🏃 Ondeman - Sport</a><a>🏃 Live TV - Sport</a><a>📶 Zona Music</a><a>📶 24/7</a><a>🔞 Adult Live</a><a>🔞 Adult VOD</a><a>⚙️ Configuraciones</a><a>🚪 Salir</a>
 </div>
 <div class="menu-footer">Cuenta: 47810922<br>Vence: 15/05/2028</div>
 </div>
@@ -83,6 +80,12 @@ body{background:#000;height:100vh;overflow:hidden}
 const menuItems=document.querySelectorAll('#menu a'), boxInput=document.getElementById('boxInput'), tecladoBtns=document.querySelectorAll('#tecladoTV button'), filtroBtns=document.querySelectorAll('#filtros button'), buscador=document.getElementById('buscador');
 const getLista=()=>document.querySelectorAll('#lista .item');
 let zona='menu', mPos=0, tPos=0, fPos=0, lPos=0;
+
+function ejecutarSalida(){
+  if(confirm('¿Deseas salir de la aplicación?')){
+    window.close();
+  }
+}
 
 function filtrarResultados(){
   const query = buscador.value.toLowerCase().trim();
@@ -101,9 +104,15 @@ buscador.addEventListener('input', filtrarResultados);
 
 function quitarFocos(){document.querySelectorAll('.foco').forEach(e=>e.classList.remove('foco'))}
 function enfocar(){quitarFocos(); if(zona==='menu') menuItems[mPos]?.classList.add('foco'); if(zona==='input') boxInput.classList.add('foco'); if(zona==='teclado') tecladoBtns[tPos]?.classList.add('foco'); if(zona==='filtros') filtroBtns[fPos]?.classList.add('foco'); if(zona==='lista') getLista()[lPos]?.classList.add('foco'); menuItems[mPos]?.scrollIntoView({block:'nearest'})}
+
 function seleccionar(){
   document.querySelectorAll('.activo').forEach(e=>e.classList.remove('activo')); 
-  if(zona==='menu') menuItems[mPos]?.classList.add('activo'); 
+  if(zona==='menu'){
+    menuItems[mPos]?.classList.add('activo');
+    if(menuItems[mPos]?.textContent.includes('Salir')){
+      ejecutarSalida();
+    }
+  }
   if(zona==='filtros') filtroBtns[fPos]?.classList.add('activo'); 
   if(zona==='lista') getLista()[lPos]?.classList.add('activo');
   if(zona==='teclado'){
@@ -118,15 +127,35 @@ function seleccionar(){
     filtrarResultados();
   }
 }
+
+// Soporte para interacción táctil en móviles
+menuItems.forEach((item, idx) => {
+  item.addEventListener('click', () => {
+    mPos = idx;
+    zona = 'menu';
+    seleccionar();
+    enfocar();
+  });
+});
+
 menuItems[0].classList.add('activo');
+
 document.addEventListener('keydown',e=>{
+  // Teclas para salir directamente (Escape, Backspace en PC o botón Atrás de TV Samsung/LG)
+  if(['Escape','Backspace'].includes(e.key) || [10009, 461].includes(e.keyCode)){
+    ejecutarSalida();
+    return;
+  }
+
   if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key)) e.preventDefault();
   if(e.key==='ArrowDown'){ if(zona==='menu') mPos=Math.min(mPos+1,menuItems.length-1); else if(zona==='input'){zona='teclado';tPos=0;} else if(zona==='teclado'){if(tPos<20) tPos+=10; else{zona='filtros';fPos=0;}} else if(zona==='filtros'){zona='lista';lPos=0;} else if(zona==='lista') lPos=Math.min(lPos+1,getLista().length-1); }
   if(e.key==='ArrowUp'){ if(zona==='menu') mPos=Math.max(mPos-1,0); else if(zona==='teclado'){if(tPos>=10) tPos-=10; else zona='input';} else if(zona==='filtros'){zona='teclado';tPos=20;} else if(zona==='lista'){if(lPos===0) zona='filtros'; else lPos--;} else if(zona==='input') zona='menu'; }
   if(e.key==='ArrowRight'){ if(zona==='menu') zona='input'; else if(zona==='teclado') tPos=Math.min(tPos+1,tecladoBtns.length-1); else if(zona==='filtros') fPos=Math.min(fPos+1,filtroBtns.length-1); }
   if(e.key==='ArrowLeft'){ if(zona==='teclado') tPos=Math.max(tPos-1,0); else if(zona==='filtros'){if(fPos===0) zona='menu'; else fPos--;} else if(zona==='lista'||zona==='input') zona='menu'; }
-  if(e.key==='Enter'){ seleccionar(); } enfocar();
-}); enfocar();
+  if(e.key==='Enter'){ seleccionar(); } 
+  enfocar();
+}); 
+enfocar();
 </script>
 </body>
 </html>
