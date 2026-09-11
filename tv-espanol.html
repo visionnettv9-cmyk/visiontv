@@ -18,24 +18,19 @@ body{background:#0a0a0a;color:#fff;overflow:hidden}
 .timeline{display:flex;background:#b30000;height:30px;align-items:center;font-size:14px;font-weight:700;flex-shrink:0}
 .timeline div{flex:1;text-align:center;border-right:1px solid rgba(255,255,255,.2)}
 .lista{flex:1;overflow-y:auto;background:rgba(20,20,20,.9)}
-.canal{display:flex;align-items:center;padding:12px 15px;border-bottom:1px solid #222;cursor:pointer;gap:12px}
-.canal.activo{background:#0066ff;color:#fff}
+.canal{display:flex;align-items:center;padding:12px 15px;border-bottom:1px solid rgba(255,255,255,0.06);cursor:pointer;gap:12px;background:rgba(0,0,0,0.15)}
+.canal.activo{background:rgba(0,102,255,0.65)!important;backdrop-filter:blur(8px)}
 .c-logo{width:50px;height:32px;background:#fff;border-radius:4px;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0}
 .c-logo img{width:100%;height:100%;object-fit:contain;padding:2px}
-.c-name{width:160px;font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.c-prog{flex:1;color:#aaa;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.canal.activo.c-prog{color:#fff}
+.c-name{width:160px;font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 1px 3px rgba(0,0,0,0.8)}
+.c-prog{flex:1;color:#aaa;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 1px 2px rgba(0,0,0,0.8)}
 #player{position:fixed;top:0;left:0;width:100vw;height:100vh;background:#000;display:none;z-index:100}
 #player video{width:100%;height:100%}
-#infobar{position:absolute;bottom:30px;left:20px;right:20px;display:none;align-items:center;gap:15px;z-index:101}
+#infobar{position:absolute;bottom:15px;left:20px;right:20px;display:none;align-items:center;gap:15px;z-index:101;background:transparent}
 .infologo{width:140px;height:85px;background:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:4px solid #ff00ff;flex-shrink:0}
 .infologo img{width:90%;height:90%;object-fit:contain}
-.bar-info{flex:1;background:linear-gradient(90deg,#0000ff,#ff00ff);padding:12px 15px;border-radius:8px;display:flex;justify-content:space-between;align-items:center}
-#sideMenu{position:absolute;left:0;top:0;width:380px;height:100%;background:rgba(0,0,0,0.65);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:none;padding:0;overflow-y:auto;border-right:1px solid rgba(255,255,255,0.1);z-index:102}
-.canal{background:rgba(0,0,0,0.3);border-bottom:1px solid rgba(255,255,255,0.08)}
-.canal.activo{background:rgba(0,102,255,0.85)!important;backdrop-filter:blur(5px)}
-#infobar{background:transparent;bottom:15px}
-.bar-info{background:linear-gradient(90deg,rgba(0,0,255,0.75),rgba(255,0,255,0.75));backdrop-filter:blur(10px)}
+.bar-info{flex:1;background:linear-gradient(90deg,rgba(0,0,255,0.55),rgba(255,0,255,0.55));backdrop-filter:blur(12px);padding:12px 15px;border-radius:8px;display:flex;justify-content:space-between;align-items:center}
+#sideMenu{position:absolute;left:0;top:0;width:380px;height:100%;background:rgba(0,0,0,0.42);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:none;padding:0;overflow-y:auto;border-right:1px solid rgba(255,255,255,0.12);z-index:102}
 </style>
 </head>
 <body>
@@ -46,24 +41,21 @@ body{background:#0a0a0a;color:#fff;overflow:hidden}
       <h2 id="chName">Cargando...</h2>
       <p style="color:#888;margin-top:6px;font-size:14px" id="chDesc">VISIONTV • Sin información</p>
       <div class="logo-box"><img id="logoBox" src=""></div>
-      <p style="position:absolute;bottom:10px;color:#666;font-size:12px">Presiona ENTER para pantalla completa | Flechas ↑↓ para cambiar</p>
+      <p style="position:absolute;bottom:10px;color:#666;font-size:12px">Presiona ENTER para pantalla completa</p>
     </div>
   </div>
-  <div class="timeline"><div>Hoy</div><div id="t1">01:30 AM</div><div id="t2">02:00 AM</div><div id="t3">02:30 AM</div></div>
+  <div class="timeline"><div>Hoy</div><div>01:30 AM</div><div>02:00 AM</div><div>02:30 AM</div></div>
   <div class="lista" id="listaCanales"></div>
 </div>
-
 <div id="player">
   <video id="fullVideo" autoplay controls></video>
   <div id="infobar">
     <div class="infologo"><img id="infoLogo" src=""></div>
-    <div class="bar-info"><div><div id="infoName" style="font-weight:800">Canal</div><small>VISIONTV • HD • Español</small></div><span id="hora" style="font-weight:700"></span></div>
+    <div class="bar-info"><div><div id="infoName" style="font-weight:800">Canal</div><small>VISIONTV • HD</small></div><span id="hora" style="font-weight:700"></span></div>
   </div>
   <div id="sideMenu"><div id="sideList"></div></div>
 </div>
-
 <script>
-// TUS MISMOS CANALES DE INDEX.HTML
 const CANALES = {
  "TV-Español": [
   {nombre:"Azteca 7", logo:"https://upload.wikimedia.org/wikipedia/commons/2/2d/Tv_Azteca_7_logo.png", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
@@ -80,30 +72,25 @@ const CANALES = {
   {nombre:"Mario Bros", logo:"https://image.tmdb.org/t/p/w300/qNBAXBIQlnY5Db4Cqe2zLxvUW1x.jpg", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
  ]
 };
-
-// JUNTAMOS TODO PARA LA GUIA
 let canales = [...CANALES["TV-Español"],...CANALES["Live TV - Sport"],...CANALES["Peliculas"]];
 let sel=0,state=0;
-
 function playHLS(video, url){
  if(Hls.isSupported()){ let hls=new Hls(); hls.loadSource(url); hls.attachMedia(video); }
  else { video.src=url; }
 }
-
 function render(){
  let lista=document.getElementById('listaCanales');
  lista.innerHTML="";
  canales.forEach((c,i)=>{
   let d=document.createElement('div');
   d.className='canal'+(i==sel?' activo':'');
-  d.innerHTML=`<div class="c-logo"><img src="${c.logo}" onerror="this.src='https://via.placeholder.com/80x50?text=TV'"></div><div class="c-name">${c.nombre}</div><div class="c-prog">No hay información disponible • HD</div>`;
+  d.innerHTML=`<div class="c-logo"><img src="${c.logo}" onerror="this.src='https://via.placeholder.com/80x50?text=TV'"></div><div class="c-name">${c.nombre}</div><div class="c-prog">No hay información</div>`;
   d.onclick=()=>{ sel=i; render(); preview(); enterGuia(); };
   lista.appendChild(d);
  });
  document.getElementById('sideList').innerHTML=document.getElementById('listaCanales').innerHTML;
 }
 function preview(){
- if(!canales[sel])return;
  let c=canales[sel];
  document.getElementById('chName').innerText=c.nombre;
  document.getElementById('logoBox').src=c.logo;
@@ -136,7 +123,7 @@ document.addEventListener('keydown',e=>{
  if(e.key=='ArrowDown'&&state!=1){ sel=(sel+1)%canales.length; render(); preview(); }
  if(e.key=='ArrowUp'&&state!=1){ sel=(sel-1+canales.length)%canales.length; render(); preview(); }
 });
-setInterval(()=>{ let h=document.getElementById('hora'); if(h) h.innerText=new Date().toLocaleString(); let d=new Date(); document.getElementById('t1').innerText=d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}); },1000);
+setInterval(()=>{ let h=document.getElementById('hora'); if(h) h.innerText=new Date().toLocaleString(); },1000);
 render(); preview();
 </script>
 </body>
