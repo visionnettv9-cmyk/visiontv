@@ -11,11 +11,23 @@ body{background:#000;height:100vh;overflow:hidden}
 .container{display:flex;padding:12px;gap:0;height:100vh;align-items:stretch}
 .menu-box{width:360px;height:calc(100vh - 24px);border:1px solid #666;border-radius:18px;background:#0e0e0e;padding:18px 10px 0 10px;display:flex;flex-direction:column}
 .menu{flex:1}
-.menu a{display:flex;align-items:center;gap:8px;padding:5px 10px;color:#e0e0e0;text-decoration:none;font-size:19px;line-height:1.1;border-radius:12px}
+.menu a{display:flex;align-items:center;gap:8px;padding:5px 10px;color:#e0e0e0;text-decoration:none;font-size:19px;line-height:1.1;border-radius:12px;cursor:pointer}
 .menu a.active{background:#0d5bff;color:#fff;width:100%}
 .menu-footer{padding:25px 10px 20px 10px;color:#fff;font-size:13px;line-height:1.4}
-.portada-wrap{flex:1;height:calc(100vh - 24px);padding:0 0 0 30px;display:flex;align-items:stretch}
-.portada{width:100%;height:100%;background:#111;background-image:url('hero.jpg');background-size:cover;background-position:center top;border-radius:18px;border:1px solid rgba(255,255,255,0.15);box-shadow:0 0 0 1px rgba(0,0,0,0.8), 0 0 50px rgba(0,0,0,0.9);-webkit-mask-image: linear-gradient(to bottom, black 92%, transparent 100%), linear-gradient(to right, black 92%, transparent 100%);mask-image: radial-gradient(ellipse at center, black 85%, transparent 100%)}
+.portada-wrap{flex:1;height:calc(100vh - 24px);padding:0 0 0 30px;display:flex;flex-direction:column}
+.portada{width:100%;height:70%;background:#111;background-image:url('hero.jpg');background-size:cover;background-position:center top;border-radius:18px;border:1px solid rgba(255,255,255,0.15);box-shadow:0 0 50px rgba(0,0,0,0.9)}
+
+/* BUSCAR */
+.buscar-box{width:100%;height:100%;background:#0e0e0e;border:1px solid #666;border-radius:18px;padding:20px;display:none;flex-direction:column}
+.buscar-box.active{display:flex}
+.search-input{display:flex;align-items:center;background:#1e1e1e;border:1px solid #444;border-radius:12px;padding:12px 15px;gap:10px}
+.search-input input{flex:1;background:transparent;border:none;color:#fff;font-size:18px;outline:none}
+.search-input span{font-size:20px}
+.filtros{display:flex;gap:8px;margin-top:15px}
+.filtros button{background:#1e1e1e;border:1px solid #444;color:#ccc;padding:6px 14px;border-radius:20px;cursor:pointer}
+.filtros button.active{background:#0d5bff;color:#fff;border-color:#0d5bff}
+.resultados{margin-top:20px;flex:1;overflow-y:auto;display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.card{background:#1a1a1a;border-radius:10px;height:140px;display:flex;align-items:center;justify-content:center;color:#555;font-size:13px;border:1px solid #222}
 </style>
 </head>
 <body>
@@ -23,22 +35,22 @@ body{background:#000;height:100vh;overflow:hidden}
 <div class="container">
 <div class="menu-box">
 <div class="menu">
-<a href="#">🔍 Buscar</a>
-<a href="#">⭐ Favoritos</a>
-<a href="#" class="active">📶 TV-Espanol</a>
-<a href="#">📶 TV-English</a>
-<a href="#">🎬 Peliculas</a>
-<a href="#">🎬 Movies</a>
-<a href="#">📺 Series</a>
-<a href="#">📺 Series Sub</a>
-<a href="#">🙂 KidZone</a>
-<a href="#">🏃 Ondeman - Sport</a>
-<a href="#">🏃 Live TV - Sport</a>
-<a href="#">📶 Zona Music</a>
-<a href="#">📶 24/7</a>
-<a href="#">🔞 Adult Live</a>
-<a href="#">🔞 Adult VOD</a>
-<a href="#">⚙️ Configuraciones</a>
+<a onclick="show('buscar')" id="btn-buscar" class="active">🔍 Buscar</a>
+<a>⭐ Favoritos</a>
+<a onclick="show('portada')" id="btn-tv">📶 TV-Espanol</a>
+<a>📶 TV-English</a>
+<a>🎬 Peliculas</a>
+<a>🎬 Movies</a>
+<a>📺 Series</a>
+<a>📺 Series Sub</a>
+<a>🙂 KidZone</a>
+<a>🏃 Ondeman - Sport</a>
+<a>🏃 Live TV - Sport</a>
+<a>📶 Zona Music</a>
+<a>📶 24/7</a>
+<a>🔞 Adult Live</a>
+<a>🔞 Adult VOD</a>
+<a>⚙️ Configuraciones</a>
 </div>
 <div class="menu-footer">
 Cuenta de Usuario: 47810922<br>
@@ -46,8 +58,40 @@ La cuenta vence el 15/05/2028
 </div>
 </div>
 <div class="portada-wrap">
-<div class="portada"></div>
+<div class="portada" id="portada"></div>
+
+<div class="buscar-box active" id="buscar">
+<div class="search-input">
+<span>🔍</span>
+<input type="text" placeholder="Escribe película, serie o canal...">
+</div>
+<div class="filtros">
+<button class="active">Todo</button>
+<button>Canales</button>
+<button>Películas</button>
+<button>Series</button>
+</div>
+<div class="resultados">
+<div class="card">Resultado 1</div>
+<div class="card">Resultado 2</div>
+<div class="card">Resultado 3</div>
+<div class="card">Resultado 4</div>
+<div class="card">Resultado 5</div>
 </div>
 </div>
+
+</div>
+</div>
+
+<script>
+function show(v){
+document.getElementById('portada').style.display = v==='portada' ? 'block' : 'none';
+document.getElementById('buscar').classList.toggle('active', v==='buscar');
+document.getElementById('btn-buscar').classList.toggle('active', v==='buscar');
+document.getElementById('btn-tv').classList.toggle('active', v==='portada');
+}
+show('buscar');
+</script>
+
 </body>
 </html>
