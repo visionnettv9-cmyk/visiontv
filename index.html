@@ -36,12 +36,12 @@ body{background:#000;height:100vh;overflow:hidden}
   position:relative;
 }
 
-.menu-footer{padding:10px;color:#888;font-size:11px;border-top:1px solid #222;margin-top:6px;flex-shrink:0}
+.menu-footer{padding:10px;color:#fff;font-size:11px;border-top:1px solid #222;margin-top:6px;flex-shrink:0}
 
 /* Contenedor principal de la derecha */
 .buscar-box{flex:1;height:calc(100vh - 24px);background:#0e0e0e;border:1px solid #666;border-radius:18px;padding:18px;display:flex;flex-direction:column;overflow:hidden}
 
-/* Vista de Inicio (Estadio) */
+/* Vista de Inicio (Estadio usando hero.jpg) */
 .vista-estadio{
   flex:1;
   display:flex;
@@ -88,13 +88,13 @@ body{background:#000;height:100vh;overflow:hidden}
 <div class="container">
 <div class="menu-box">
 <div class="menu" id="menu">
-<a>🔍 Buscar</a><a>⭐ Favoritos</a><a>📶 TV-Espanol</a><a>📶 TV-English</a><a>🎬 Peliculas</a><a>🎬 Movies</a><a>📺 Series</a><a>📺 Series Sub</a><a>🙂 KidZone</a><a>🏃 Ondeman - Sport</a><a>🏃 Live TV - Sport</a><a>📶 Zona Music</a><a>📶 24/7</a><a>🔞 Adult Live</a><a>🔞 Adult VOD</a><a>⚙️ Configuraciones</a><a>🚪 Salir</a>
+<a>🔍 Buscar</a><a>⭐ Favoritos</a><a>📶 TV-Espanol</a><a>📶 TV-English</a><a>🎬 Peliculas</a><a>🎬 Movies</a><a>📺 Series</a><a>📺 Series Sub</a><a>🙂 KidZone</a><a>🏃 Ondeman - Sport</a><a>🏃 Live TV - Sport</a><a>📶 Zona Music</a><a>📶 24/7</a><a>🔞 Adult Live</a><a>🔞 Adult VOD</a><a>⚙️ Configuraciones</a>
 </div>
 <div class="menu-footer">Cuenta: 47810922<br>Vence: 15/05/2028</div>
 </div>
 
 <div class="buscar-box">
-  <!-- PANTALLA DE INICIO CON FONDO DE ESTADIO DE FÚTBOL -->
+  <!-- PANTALLA DE INICIO CON FONDO DEL ESTADIO (hero.jpg) -->
   <div id="vistaEstadio" class="vista-estadio"></div>
 
   <!-- VISTA DEL BUSCADOR -->
@@ -156,18 +156,14 @@ function seleccionar(){
     menuItems[mPos]?.classList.add('activo');
     const textoOpcion = menuItems[mPos]?.textContent.toLowerCase();
     
-    // Si la opción seleccionada es Buscar, mostramos el panel del buscador
+    // Muestra el buscador únicamente si la opción seleccionada es Buscar
     if(textoOpcion.includes('buscar')){
       vistaEstadio.style.display = 'none';
       vistaBuscador.style.display = 'flex';
     } else {
-      // Para cualquier otra opción del menú, mostramos la pantalla del estadio
+      // Para cualquier otra opción, muestra la imagen hero.jpg
       vistaEstadio.style.display = 'flex';
       vistaBuscador.style.display = 'none';
-    }
-
-    if(textoOpcion.includes('salir')){
-      ejecutarSalida();
     }
   }
 
@@ -187,7 +183,7 @@ function seleccionar(){
   }
 }
 
-// Soporte para interacción táctil en móviles
+// Soporte táctil para móviles
 menuItems.forEach((item, idx) => {
   item.addEventListener('click', () => {
     mPos = idx;
@@ -200,10 +196,9 @@ menuItems.forEach((item, idx) => {
 menuItems[0].classList.add('activo');
 
 document.addEventListener('keydown',e=>{
-  // Presionar la tecla "Atrás / Escape / Backspace" devuelve el foco al menú principal de la izquierda
+  // Tecla ESC en PC o botón BACK en controles de Smart TV (Samsung/LG/Android)
   if(['Escape','Backspace'].includes(e.key) || [10009, 461].includes(e.keyCode)){
-    zona = 'menu';
-    enfocar();
+    ejecutarSalida();
     return;
   }
 
@@ -241,6 +236,10 @@ document.addEventListener('keydown',e=>{
   
   enfocar();
 }); 
+
+// Asegurar que al inicio se vea la pantalla del estadio (hero.jpg)
+vistaEstadio.style.display = 'flex';
+vistaBuscador.style.display = 'none';
 
 enfocar();
 </script>
