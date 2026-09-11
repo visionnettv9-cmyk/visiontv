@@ -15,7 +15,8 @@ body{background:#000;height:100vh;overflow:hidden}
 .menu::-webkit-scrollbar{width:0;display:none}
 .menu{scrollbar-width:none}
 
-.menu a{display:flex;align-items:center;gap:10px;padding:10px 12px;color:#666;text-decoration:none;font-size:16px;border-radius:12px;cursor:pointer;border:2px solid transparent;transition:all 0.18s ease;margin:3px 0}
+/* Espacio reducido entre renglones del menú */
+.menu a{display:flex;align-items:center;gap:10px;padding:6px 12px;color:#666;text-decoration:none;font-size:16px;border-radius:12px;cursor:pointer;border:2px solid transparent;transition:all 0.18s ease;margin:1px 0}
 
 /* DONDE ESTAS - YA SIN AZUL, SOLO GRANDE */
 .menu a.activo{
@@ -79,12 +80,44 @@ body{background:#000;height:100vh;overflow:hidden}
 </div>
 </div>
 <script>
-const menuItems=document.querySelectorAll('#menu a'), boxInput=document.getElementById('boxInput'), tecladoBtns=document.querySelectorAll('#tecladoTV button'), filtroBtns=document.querySelectorAll('#filtros button');
-const getLista=()=>document.querySelectorAll('#lista.item');
+const menuItems=document.querySelectorAll('#menu a'), boxInput=document.getElementById('boxInput'), tecladoBtns=document.querySelectorAll('#tecladoTV button'), filtroBtns=document.querySelectorAll('#filtros button'), buscador=document.getElementById('buscador');
+const getLista=()=>document.querySelectorAll('#lista .item');
 let zona='menu', mPos=0, tPos=0, fPos=0, lPos=0;
+
+function filtrarResultados(){
+  const query = buscador.value.toLowerCase().trim();
+  const items = getLista();
+  items.forEach(item => {
+    const texto = item.textContent.toLowerCase();
+    if(texto.includes(query)){
+      item.style.display = 'block';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+}
+
+buscador.addEventListener('input', filtrarResultados);
+
 function quitarFocos(){document.querySelectorAll('.foco').forEach(e=>e.classList.remove('foco'))}
 function enfocar(){quitarFocos(); if(zona==='menu') menuItems[mPos]?.classList.add('foco'); if(zona==='input') boxInput.classList.add('foco'); if(zona==='teclado') tecladoBtns[tPos]?.classList.add('foco'); if(zona==='filtros') filtroBtns[fPos]?.classList.add('foco'); if(zona==='lista') getLista()[lPos]?.classList.add('foco'); menuItems[mPos]?.scrollIntoView({block:'nearest'})}
-function seleccionar(){document.querySelectorAll('.activo').forEach(e=>e.classList.remove('activo')); if(zona==='menu') menuItems[mPos]?.classList.add('activo'); if(zona==='filtros') filtroBtns[fPos]?.classList.add('activo'); if(zona==='lista') getLista()[lPos]?.classList.add('activo');}
+function seleccionar(){
+  document.querySelectorAll('.activo').forEach(e=>e.classList.remove('activo')); 
+  if(zona==='menu') menuItems[mPos]?.classList.add('activo'); 
+  if(zona==='filtros') filtroBtns[fPos]?.classList.add('activo'); 
+  if(zona==='lista') getLista()[lPos]?.classList.add('activo');
+  if(zona==='teclado'){
+    const tecla = tecladoBtns[tPos].textContent;
+    if(tecla === '⌫'){
+      buscador.value = buscador.value.slice(0, -1);
+    } else if(tecla === 'ESPACIO'){
+      buscador.value += ' ';
+    } else {
+      buscador.value += tecla;
+    }
+    filtrarResultados();
+  }
+}
 menuItems[0].classList.add('activo');
 document.addEventListener('keydown',e=>{
   if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key)) e.preventDefault();
