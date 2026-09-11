@@ -41,11 +41,38 @@
     <!-- VISTA PREVIA -->
     <div id="vistaPreview" class="vista-preview"></div>
 
-    <!-- VISTA FAVORITOS -->
-    <div id="vistaFavoritos" class="vista-favoritos">
-      <h2>⭐ Tus Favoritos</h2>
-      <div class="resultados" id="listaFavoritos"></div>
-    </div>
+    function cargarVistaFavoritos() {
+  listaFavoritosContenedor.innerHTML = '';
+  let guardados = 0;
+
+  // Busca cada ID guardado directamente en todo el documento HTML
+  misFavoritos.forEach(id => {
+    const itemOriginal = document.querySelector(`#lista .item[data-id="${id}"]`);
+    if (itemOriginal) {
+      const nombre = itemOriginal.dataset.nombreBase || itemOriginal.textContent.replace(' ⭐', '').trim();
+      
+      const clon = document.createElement('div');
+      clon.className = 'item';
+      clon.dataset.id = id;
+      clon.dataset.cat = itemOriginal.dataset.cat;
+      clon.dataset.nombreBase = nombre;
+      clon.textContent = `${nombre} ⭐`;
+      
+      listaFavoritosContenedor.appendChild(clon);
+      guardados++;
+    }
+  });
+
+  if (guardados === 0) {
+    listaFavoritosContenedor.innerHTML = '<p style="color:#888; padding:10px;">No tienes elementos guardados.</p>';
+  }
+
+  // Ajustar la posición de navegación
+  const favs = getFavVisibles();
+  if (favPos >= favs.length) {
+    favPos = Math.max(0, favs.length - 1);
+  }
+}
 
     <!-- VISTA BUSCADOR -->
     <div id="vistaBuscador" class="vista-buscador">
