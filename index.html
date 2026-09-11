@@ -60,7 +60,7 @@ const CANALES = {
   {nombre:"La Casa de Papel", logo:"https://image.tmdb.org/t/p/w300/reEMJA1uzscCbkpeRJeTT2bjqUp.jpg", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
  ],
  "KidZone": [
-  {nombre:"Paw Patrol", logo:"https://image.tmdb.org/t/p/w300/4Zp9bCw6z4r2z4Z4Z4Z4Z4.jpg", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
+  {nombre:"Paw Patrol", logo:"https://via.placeholder.com/300x180?text=Paw+Patrol", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
  ],
  "Live TV - Sport": [
   {nombre:"ESPN", logo:"https://upload.wikimedia.org/wikipedia/commons/2/2f/ESPN_wordmark.svg", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
@@ -83,7 +83,16 @@ CATEGORIAS.forEach((cat,i)=>{
  menu.innerHTML+=`<div class="item ${i==2?'active':''}" onclick="sel(this,'${cat}')">${icon} ${cat}</div>`;
 });
 
-function sel(el,n){document.querySelectorAll('.item').forEach(i=>i.classList.remove('active'));el.classList.add('active');load(n);}
+function sel(el,n){
+ document.querySelectorAll('.item').forEach(i=>i.classList.remove('active'));
+ el.classList.add('active');
+ // FIX: TV-Español ahora abre la guia EPG
+ if(n === 'TV-Español'){
+   window.location.href = "tv-espanol.html";
+   return;
+ }
+ load(n);
+}
 
 function load(cat){
  let c=document.getElementById('content');
@@ -99,7 +108,6 @@ function load(cat){
  lista.forEach(ch=>{
   c.innerHTML+=`<div class="card" onclick="play('${ch.url}','${ch.nombre}')"><img src="${ch.logo}" onerror="this.src='https://via.placeholder.com/300x180?text=${ch.nombre}'"><div>${ch.nombre}</div></div>`;
  });
- for(let i=lista.length;i<12;i++){ c.innerHTML+=`<div class="card"><img src="https://picsum.photos/seed/${cat}${i}/300/180"><div>${cat} ${i}</div></div>`; }
 }
 
 function filtrar(){
@@ -116,7 +124,7 @@ function play(url,nombre){
  if(Hls.isSupported()){let hls=new Hls();hls.loadSource(url);hls.attachMedia(video);} else {video.src=url;}
 }
 function cerrar(){document.getElementById('player').style.display='none';document.getElementById('video').pause();}
-load('TV-Español');
+load('TV-English');
 </script>
 </body>
 </html>
