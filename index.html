@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>VISIONTV</title>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
 body{background:#0e0e0e;color:#fff;height:100vh;overflow:hidden;background-image:repeating-linear-gradient(115deg,#0e0e0e 0 18px,#180000 18px 20px,#000 20px 40px)}
@@ -10,65 +11,111 @@ body{background:#0e0e0e;color:#fff;height:100vh;overflow:hidden;background-image
 .logo{font-weight:900;font-size:28px;color:#ff0000;font-style:italic}.logo span{color:#fff}
 .main{display:flex;height:calc(100vh - 95px);margin-top:55px}
 .sidebar{width:300px;background:#000;border:1px solid #222;border-radius:12px;margin:12px;padding:8px 0;overflow-y:auto}
-.item{display:flex;gap:10px;padding:11px 18px;margin:2px 8px;border-radius:6px;cursor:pointer;color:#aaa;font-size:14px}
+.item{padding:11px 18px;margin:2px 8px;border-radius:6px;cursor:pointer;color:#aaa;font-size:14px;display:flex;gap:8px}
 .item.active{background:#1a5cff;color:#fff;font-weight:700}
 .item:hover{background:#222;color:#fff}
 .content{flex:1;margin:12px;background:#080808;border:1px solid #222;border-radius:12px;padding:12px;display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;overflow-y:auto;align-content:start}
-.card{background:#151515;border-radius:8px;overflow:hidden;border:1px solid #222;cursor:pointer;transition:0.2s}
+.card{background:#151515;border-radius:8px;overflow:hidden;border:1px solid #222;cursor:pointer;transition:.2s}
 .card:hover{transform:scale(1.05);border-color:#ff0000}
-.card img{width:100%;height:95px;object-fit:cover;background:#000}
+.card img{width:100%;height:95px;object-fit:contain;background:#000;padding:5px}
 .card div{padding:8px;text-align:center;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .footer{height:40px;background:#000;border-top:1px solid #222;display:flex;justify-content:space-between;align-items:center;padding:0 15px;font-size:10px;color:#666;position:fixed;bottom:0;width:100%}
-.p{padding:5px 10px;border-radius:4px;color:#fff;font-weight:800;font-size:9px}.and{background:#3ddc84;color:#000}.fire{background:#ff9900}.mi{background:#ff6a00}.roku{background:#662d91}
+#player{position:fixed;inset:0;background:#000;z-index:99;display:none;flex-direction:column}
+#player video{flex:1;width:100%;background:#000}
 </style>
 </head>
 <body>
-<div class="top"><div class="logo">VISION<span>TV</span></div><div style="margin-left:auto;font-size:10px;color:#555">visionnettv9-cmyk.github.io/visiontv/</div></div>
+<div class="top"><div class="logo">VISION<span>TV</span></div><div style="margin-left:auto;font-size:10px;color:#555">BUSCAR FUNCIONANDO</div></div>
 
 <div class="main">
-<div class="sidebar">
-<div class="item" onclick="sel(this,'Buscar')">🔍 Buscar</div>
-<div class="item" onclick="sel(this,'Favoritos')">⭐ Favoritos</div>
-<div class="item active" onclick="sel(this,'TV-Español')">📡 TV-Español</div>
-<div class="item" onclick="sel(this,'TV-English')">📡 TV-English</div>
-<div class="item" onclick="sel(this,'Peliculas')">🎞️ Peliculas</div>
-<div class="item" onclick="sel(this,'Movies')">🎞️ Movies</div>
-<div class="item" onclick="sel(this,'Series')">📺 Series</div>
-<div class="item" onclick="sel(this,'Series Sub')">📺 Series Sub</div>
-<div class="item" onclick="sel(this,'KidZone')">😊 KidZone</div>
-<div class="item" onclick="sel(this,'Ondeman - Sport')">🏅 Ondeman - Sport</div>
-<div class="item" onclick="sel(this,'Live TV - Sport')">🏃 Live TV - Sport</div>
-<div class="item" onclick="sel(this,'Zona Music')">🎵 Zona Music</div>
-<div class="item" onclick="sel(this,'24/7')">📡 24/7</div>
-<div class="item" onclick="sel(this,'Adult Live')">🔞 Adult Live</div>
-<div class="item" onclick="sel(this,'Adult VOD')">🔞 Adult VOD</div>
-<div class="item" onclick="sel(this,'Configuraciones')">⚙️ Configuraciones</div>
-</div>
+<div class="sidebar" id="menu"></div>
 <div class="content" id="content"></div>
 </div>
 
-<div class="footer"><div>Cuenta: visionnettv9-cmyk | Vence: 15/05/2028</div><div style="display:flex;gap:6px;align-items:center"><div class="p and">ANDROID</div><div class="p fire">fire tv</div><div class="p mi">mi</div><div class="p roku">Roku</div><div style="font-weight:900;font-style:italic;font-size:16px;color:#fff;margin-left:10px">VISION<span style="color:#ff0000">TV</span></div></div></div>
+<div class="footer"><div>Cuenta: visionnettv9-cmyk | Vence: 2028</div><div style="font-weight:900;font-style:italic;font-size:16px;color:#fff">VISION<span style="color:#ff0000">TV</span></div></div>
+
+<div id="player"><div style="padding:12px;background:#111;display:flex;justify-content:space-between"><span id="playing">Reproduciendo</span><button onclick="cerrar()" style="background:#ff0000;border:none;color:#fff;padding:8px 15px;border-radius:5px;font-weight:900">X CERRAR</button></div><video id="video" controls autoplay></video></div>
 
 <script>
-const posters = {
- 'TV-Español': 'https://i.imgur.com/8Km9tLL.png',
- 'TV-English': 'https://i.imgur.com/3oJ2a3a.png',
- 'Peliculas': 'https://image.tmdb.org/t/p/w300/qW4crfED8mpNDadSmMdi7ZDzhXF.jpg',
- 'Movies': 'https://image.tmdb.org/t/p/w300/1E5baAaEse26fej7uHcjOgEE2t2.jpg',
- 'default': 'https://via.placeholder.com/300x180/111/ff0000?text=VISIONTV'
+const CANALES = {
+ "TV-Español": [
+  {nombre:"Azteca 7", logo:"https://upload.wikimedia.org/wikipedia/commons/2/2d/Tv_Azteca_7_logo.png", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
+  {nombre:"Canal 5", logo:"https://upload.wikimedia.org/wikipedia/commons/4/48/Canal_5_logo.png", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
+  {nombre:"Las Estrellas", logo:"https://upload.wikimedia.org/wikipedia/commons/6/6b/Las_Estrellas_logo.png", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
+  {nombre:"TUDN", logo:"https://upload.wikimedia.org/wikipedia/commons/3/32/TUDN_logo.png", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
+ ],
+ "TV-English": [
+  {nombre:"ABC", logo:"https://upload.wikimedia.org/wikipedia/commons/8/8a/ABC-Logo-2013.png", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
+  {nombre:"NBC", logo:"https://upload.wikimedia.org/wikipedia/commons/8/88/NBC_logo_2022.png", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
+ ],
+ "Peliculas": [
+  {nombre:"Avengers Endgame", logo:"https://image.tmdb.org/t/p/w300/or06FN3Dka5tukK1e9sl16pB3iy.jpg", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
+  {nombre:"Mario Bros", logo:"https://image.tmdb.org/t/p/w300/qNBAXBIQlnY5Db4Cqe2zLxvUW1x.jpg", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
+  {nombre:"John Wick 4", logo:"https://image.tmdb.org/t/p/w300/vZloFAK7NmvMGKE7VkF5UHaz0I.jpg", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
+ ],
+ "Movies": [
+  {nombre:"Barbie", logo:"https://image.tmdb.org/t/p/w300/iuFNMS8U5cb6xfzi81RuehKBh6E.jpg", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
+ ],
+ "Series": [
+  {nombre:"La Casa de Papel", logo:"https://image.tmdb.org/t/p/w300/reEMJA1uzscCbkpeRJeTT2bjqUp.jpg", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
+ ],
+ "KidZone": [
+  {nombre:"Paw Patrol", logo:"https://image.tmdb.org/t/p/w300/4Zp9bCw6z4r2z4Z4Z4Z4Z4.jpg", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
+ ],
+ "Live TV - Sport": [
+  {nombre:"ESPN", logo:"https://upload.wikimedia.org/wikipedia/commons/2/2f/ESPN_wordmark.svg", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
+  {nombre:"Fox Sports", logo:"https://upload.wikimedia.org/wikipedia/commons/9/94/Fox_Sports_logo.svg", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
+ ],
+ "Zona Music": [
+  {nombre:"MTV Hits", logo:"https://upload.wikimedia.org/wikipedia/commons/5/54/MTV_2021.svg", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
+ ],
+ "24/7": [
+  {nombre:"24/7 Los Simpsons", logo:"https://upload.wikimedia.org/wikipedia/commons/4/44/The_Simpsons_yellow_logo.svg", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
+ ]
 };
+
+const CATEGORIAS = ["Buscar","Favoritos","TV-Español","TV-English","Peliculas","Movies","Series","Series Sub","KidZone","Ondeman - Sport","Live TV - Sport","Zona Music","24/7","Adult Live","Adult VOD","Configuraciones"];
+
+let menu = document.getElementById('menu');
+CATEGORIAS.forEach((cat,i)=>{
+ let icon = "📡";
+ if(cat.includes("Buscar")) icon="🔍"; if(cat.includes("Fav")) icon="⭐"; if(cat.includes("Pel")) icon="🎞️"; if(cat.includes("Movi")) icon="🎞️"; if(cat.includes("Series")) icon="📺"; if(cat.includes("Kid")) icon="😊"; if(cat.includes("Sport")) icon="🏃"; if(cat.includes("Music")) icon="🎵"; if(cat.includes("Adult")) icon="🔞"; if(cat.includes("Config")) icon="⚙️";
+ menu.innerHTML+=`<div class="item ${i==2?'active':''}" onclick="sel(this,'${cat}')">${icon} ${cat}</div>`;
+});
+
 function sel(el,n){document.querySelectorAll('.item').forEach(i=>i.classList.remove('active'));el.classList.add('active');load(n);}
+
 function load(cat){
- let c=document.getElementById('content'); c.innerHTML='';
- for(let i=1;i<=18;i++){
-  let img = posters[cat] || posters['default'];
-  // Para que se vea real, usamos posters de pelis si es pelis
-  if(cat.includes('Peliculas')||cat.includes('Movies')||cat.includes('Series')){
-   img = `https://picsum.photos/seed/${cat}${i*3}/300/180`;
-  }
-  c.innerHTML+=`<div class="card"><img src="${img}"><div>${cat} ${i}</div></div>`;
+ let c=document.getElementById('content');
+ if(cat==='Buscar'){
+  c.innerHTML=`<div style="grid-column:1/-1"><div style="display:flex;gap:10px;margin-bottom:15px"><input id="searchInput" onkeyup="filtrar()" placeholder="Escribe: ej. Azteca, ESPN, Avengers..." style="flex:1;padding:14px;border-radius:8px;border:2px solid #ff0000;background:#000;color:#fff;font-size:16px;outline:none"><button onclick="filtrar()" style="padding:14px 20px;background:#1a5cff;border:none;border-radius:8px;color:#fff;font-weight:900">BUSCAR</button></div><div id="resultados" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px"></div></div>`;
+  let res=document.getElementById('resultados');
+  Object.values(CANALES).flat().forEach(ch=>{res.innerHTML+=`<div class="card item-buscable" onclick="play('${ch.url}','${ch.nombre}')"><img src="${ch.logo}"><div>${ch.nombre}</div></div>`});
+  setTimeout(()=>document.getElementById('searchInput')?.focus(),100);
+  return;
  }
+ c.innerHTML='';
+ let lista = CANALES[cat] || [{nombre:`Demo ${cat} 1`,logo:`https://via.placeholder.com/300x180/111/ff0000?text=${cat}`,url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"}];
+ lista.forEach(ch=>{
+  c.innerHTML+=`<div class="card" onclick="play('${ch.url}','${ch.nombre}')"><img src="${ch.logo}" onerror="this.src='https://via.placeholder.com/300x180?text=${ch.nombre}'"><div>${ch.nombre}</div></div>`;
+ });
+ for(let i=lista.length;i<12;i++){ c.innerHTML+=`<div class="card"><img src="https://picsum.photos/seed/${cat}${i}/300/180"><div>${cat} ${i}</div></div>`; }
 }
+
+function filtrar(){
+ let texto = document.getElementById('searchInput').value.toLowerCase();
+ document.querySelectorAll('.item-buscable').forEach(card=>{
+  card.style.display = card.innerText.toLowerCase().includes(texto)? 'block' : 'none';
+ });
+}
+
+function play(url,nombre){
+ document.getElementById('player').style.display='flex';
+ document.getElementById('playing').innerText=nombre;
+ let video=document.getElementById('video');
+ if(Hls.isSupported()){let hls=new Hls();hls.loadSource(url);hls.attachMedia(video);} else {video.src=url;}
+}
+function cerrar(){document.getElementById('player').style.display='none';document.getElementById('video').pause();}
 load('TV-Español');
 </script>
 </body>
