@@ -6,30 +6,49 @@
 <title>VISIONTV</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
-body{background:#0e0e0e;background-image:repeating-linear-gradient(135deg,#111 0 20px,#0e0e0e 20px 40px);min-height:100vh;color:#fff}
-.header{padding:15px 25px;display:flex;justify-content:space-between;align-items:center}
-.logo{font-weight:900;font-size:28px;color:#e50914} .logo span{color:#fff}
-.container{display:flex;justify-content:center;padding:40px 20px}
-.menu{width:400px;background:rgba(0,0,0,0.9);border-radius:15px;padding:15px;border:1px solid #222}
-.menu a{display:flex;padding:14px 16px;margin:6px 0;border-radius:10px;color:#ddd;text-decoration:none}
-.menu a:hover{background:#222;color:#fff}
-.menu a.active{background:#1a5bff;color:#fff;font-weight:bold}
+body{background:#000;min-height:100vh;overflow:hidden}
+.bg{position:fixed;inset:0;background:linear-gradient(110deg,#000 0%,#1a0000 30%,#000 60%), repeating-linear-gradient(120deg, transparent 0 2px, rgba(255,0,0,0.15) 2px 4px);z-index:-1}
+.bg::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-30deg, transparent 0 80px, rgba(255,0,0,0.3) 80px 82px)}
+.container{display:flex;height:100vh;padding:20px;gap:20px}
+.menu{width:310px;background:rgba(0,0,0,0.75);border:1px solid #333;border-radius:15px;padding:15px 10px;backdrop-filter:blur(10px)}
+.menu a{display:flex;align-items:center;gap:8px;padding:8px 12px;color:#ccc;text-decoration:none;font-size:18px;border-radius:6px}
+.menu a:hover{color:#fff;background:rgba(255,255,255,0.1)}
+.menu a.active{background:#0055ff;color:#fff;width:130%;position:relative;left:-10px;padding-left:22px;font-weight:bold;box-shadow:0 0 20px rgba(0,85,255,0.6)}
+.portada{flex:1;background:#000;border:2px solid #333;border-radius:10px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+/* PARA CAMBIAR LA IMAGEN, CAMBIA LA URL DE ABAJO O SUBE UN ARCHIVO LLAMADO hero.jpg */
+.portada{background-image:url('hero.jpg');background-size:cover;background-position:center;background-color:#000}
+.portada.empty::after{content:'PORTADA NEGRA - Sube tu imagen como hero.jpg';color:#555;font-size:14px}
+.footer{position:fixed;bottom:15px;left:20px;right:20px;display:flex;justify-content:space-between;align-items:flex-end;color:#ccc;font-size:13px}
 </style>
 </head>
 <body>
-<div class="header"><div class="logo">VISION<span>TV</span></div></div>
+<div class="bg"></div>
 <div class="container">
 <div class="menu">
-<a href="tv-espanol.html">📺 TV-Español</a>
-<a href="tv-english.html">📺 TV-English</a>
-<a href="peliculas.html">🎬 Peliculas</a>
-<a href="movies.html">🎬 Movies</a>
+<a href="#">🔍 Buscar</a>
+<a href="#">⭐ Favoritos</a>
+<a href="tv-espanol.html" class="active">📶 TV-Espanol</a>
+<a href="tv-english.html">📶 TV-English</a>
+<a href="peliculas.html">🎞️ Peliculas</a>
+<a href="movies.html">🎞️ Movies</a>
 <a href="series.html">📺 Series</a>
-<a href="kidzone.html">😊 KidZone</a>
-<a href="live-sport.html">🏅 Live TV - Sport</a>
-<a href="zona-music.html">🎵 Zona Music</a>
-<a href="24-7.html">📺 24/7</a>
-<a href="config.html" class="active">⚙️ Configuraciones</a>
+<a href="series-sub.html">📺 Series Sub</a>
+<a href="kidzone.html">🙂 KidZone</a>
+<a href="#">🏃 Ondeman - Sport</a>
+<a href="live-sport.html">🏃 Live TV - Sport</a>
+<a href="zona-music.html">📶 Zona Music</a>
+<a href="24-7.html">📶 24/7</a>
+<a href="adult-live.html">🔞 Adult Live</a>
+<a href="adult-vod.html">🔞 Adult VOD</a>
+<a href="config.html">⚙️ Configuraciones</a>
+</div>
+<div class="portada" id="portada"></div>
+</div>
+<div class="footer">
+<div>Cuenta de Usuario: visionnettv9-cmyk<br>La cuenta vence el 15/05/2028</div>
+<div style="display:flex;gap:10px;align-items:center">
+<span style="background:#fff;padding:5px;border-radius:4px">ANDROID fire tv mi Roku</span>
+<b style="font-size:22px">VISION<span style="color:red">TV</span></b>
 </div>
 </div>
 </body>
