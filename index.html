@@ -5,31 +5,29 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VISIONTV</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
-body{background:#000;min-height:100vh;overflow:hidden}
-.bg{position:fixed;inset:0;background:#000;z-index:-1}
-.bg::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-30deg, transparent 0 80px, rgba(255,0,0,0.35) 80px 82px, transparent 82px 160px)}
-.container{display:flex;height:85vh;padding:18px 18px 0 18px;gap:18px}
-.menu{width:310px;background:rgba(10,10,10,0.95);border:1px solid #333;border-radius:15px;display:flex;flex-direction:column;justify-content:space-between;padding:15px 10px}
-.menu-top{flex:1;overflow-y:auto}
-.menu a{display:flex;padding:7px 12px;color:#bbb;text-decoration:none;font-size:16px;border-radius:6px;margin:1px 0}
-.menu a.active{background:#0055ff;color:#fff;width:calc(100% + 20px);margin-left:-10px;padding-left:22px;font-weight:bold;box-shadow:0 0 15px rgba(0,85,255,0.6)}
-.menu-bottom{padding:15px 5px 5px 5px;border-top:1px solid #222;margin-top:15px;font-size:11px;color:#777;line-height:15px}
-.portada{flex:1;background:#000;border:1px solid #333;border-radius:12px;background-image:url('hero.jpg');background-size:cover;background-position:center}
-.bottom-bar{height:15vh;display:flex;align-items:flex-end;justify-content:space-between;padding:0 20px 15px 20px;color:#666;font-size:11px}
-.logo-corner{font-size:20px;font-weight:900;color:#fff} .logo-corner span{color:red}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
+body{background:#000;height:100vh;overflow:hidden}
+.bg{position:fixed;inset:0;z-index:-1;background:#050000;background-image:repeating-linear-gradient(135deg, transparent 0 30px, rgba(255,0,0,0.18) 30px 32px, transparent 32px 60px), repeating-linear-gradient(135deg, transparent 0 60px, rgba(200,0,0,0.5) 60px 62px, transparent 62px 90px)}
+.container{display:flex;height:100vh;padding:15px;gap:20px}
+.menu-wrap{width:340px;display:flex;flex-direction:column}
+.menu{flex:1;border:1px solid #555;border-radius:18px;background:rgba(0,0,0,0.35);padding:20px 15px 20px 15px;backdrop-filter:blur(1px);position:relative}
+.menu a{display:flex;align-items:center;gap:10px;padding:8px 10px;color:#ddd;text-decoration:none;font-size:19px;white-space:nowrap}
+.menu a.active{background:#0a53ff;color:#fff;border-radius:25px 0 0 25px;width:calc(100% + 55px);margin-left:-5px;padding-left:12px;position:relative;z-index:10;box-shadow:0 0 0 4px rgba(10,83,255,0.3)}
+.menu a.active::after{content:'';position:absolute;left:100%;top:0;width:35px;height:100%;background:linear-gradient(90deg, #0a53ff 0%, rgba(10,83,255,0.4) 100%)}
+.menu-bottom{padding:25px 0 10px 15px;color:#fff;font-size:13px;line-height:18px;text-align:left;margin-top:auto}
+.portada{flex:1;height:78vh;background:#111;border:1px solid #999;border-radius:2px;background-image:url('hero.jpg');background-size:cover;background-position:top center;background-color:#1a0a2e}
 </style>
 </head>
 <body>
 <div class="bg"></div>
 <div class="container">
+<div class="menu-wrap">
 <div class="menu">
-<div class="menu-top">
 <a href="#">🔍 Buscar</a>
 <a href="#">⭐ Favoritos</a>
 <a href="tv-espanol.html" class="active">📶 TV-Espanol</a>
 <a href="tv-english.html">📶 TV-English</a>
-<a href="peliculas.html">🎞️ Peliculas</a>
+<a href="peliculas.html">🎬 Peliculas</a>
 <a href="movies.html">🎬 Movies</a>
 <a href="series.html">📺 Series</a>
 <a href="series-sub.html">📺 Series Sub</a>
@@ -41,14 +39,10 @@ body{background:#000;min-height:100vh;overflow:hidden}
 <a href="adult-live.html">🔞 Adult Live</a>
 <a href="adult-vod.html">🔞 Adult VOD</a>
 <a href="config.html">⚙️ Configuraciones</a>
+<div class="menu-bottom">Cuenta de Usuario: 47810922<br>La cuenta vence el 15/05/2028</div>
 </div>
-<div class="menu-bottom">Cuenta de Usuario: visionnettv9-cmyk<br>La cuenta vence el 15/05/2028</div>
 </div>
 <div class="portada"></div>
-</div>
-<div class="bottom-bar">
-<div></div>
-<div class="logo-corner">VISION<span>TV</span></div>
 </div>
 </body>
 </html>
