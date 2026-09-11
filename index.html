@@ -8,33 +8,49 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial, sans-serif}
 body{background:#000;height:100vh;overflow:hidden}
 .fondo{position:fixed;inset:0;z-index:-1;background:repeating-linear-gradient(-55deg, transparent 0 18px, rgba(180,0,0,0.9) 18px 20px, transparent 20px 38px, rgba(255,0,0,0.7) 38px 40px)}
+
 .container{display:flex;padding:12px;gap:12px;height:100vh;align-items:stretch}
-.menu-box{width:340px;height:calc(100vh - 24px);border:1px solid #666;border-radius:18px;background:#0e0e0e;padding:18px 10px 0 10px;display:flex;flex-direction:column}
-.menu{flex:1;overflow-y:auto}
+
+/* CAJA MENU - ARREGLO DEL SCROLL AMARILLO */
+.menu-box{width:340px;height:calc(100vh - 24px);border:1px solid #666;border-radius:18px;background:#0e0e0e;padding:18px 10px 0 10px;display:flex;flex-direction:column; overflow:hidden;}
+
+.menu{flex:1;overflow-y:auto;overflow-x:hidden;padding-right:4px}
+/* ESTO QUITA LA BARRA FEA */
+.menu::-webkit-scrollbar{width:0px;height:0px;display:none}
+.menu{scrollbar-width:none;-ms-overflow-style:none}
+
 .menu a{display:flex;align-items:center;gap:10px;padding:8px 12px;color:#e0e0e0;text-decoration:none;font-size:16px;border-radius:12px;cursor:pointer;outline:none;border:2px solid transparent;transition:0.2s}
-.menu a.activo{ background:#0d5bff!important; color:#fff!important; } /* DONDE ESTAS */
-.menu a.foco{ border-color:#fff!important; box-shadow:0 0 12px #fff, 0 0 22px #0d5bff!important; transform:scale(1.04); } /* A DONDE VAS */
-.menu-footer{padding:25px 10px 18px 10px;color:#fff;font-size:12px;line-height:1.4}
-.buscar-box{flex:1;height:calc(100vh - 24px);background:#0e0e0e;border:1px solid #666;border-radius:18px;padding:18px;display:flex;flex-direction:column}
+.menu a.activo{ background:#0d5bff!important; color:#fff!important; }
+.menu a.foco{ border-color:#fff!important; box-shadow:0 0 12px #fff, 0 0 22px #0d5bff!important; transform:scale(1.04); }
+
+.menu-footer{padding:25px 10px 18px 10px;color:#fff;font-size:12px;line-height:1.4;border-top:1px solid #222;margin-top:10px;flex-shrink:0}
+
+.buscar-box{flex:1;height:calc(100vh - 24px);background:#0e0e0e;border:1px solid #666;border-radius:18px;padding:18px;display:flex;flex-direction:column;overflow:hidden}
+
 .search-input{display:flex;align-items:center;background:#1c1c1c;border:2px solid #333;border-radius:12px;padding:12px 15px;gap:10px;transition:0.2s}
 .search-input input{flex:1;background:transparent;border:none;color:#fff;font-size:16px;outline:none}
 .search-input.activo{ background:#0d5bff; border-color:#0d5bff; }
 .search-input.foco{ border-color:#fff!important; box-shadow:0 0 15px #fff, 0 0 25px #0d5bff!important; }
-.filtros{display:flex;gap:8px;margin-top:14px}
+
+.filtros{display:flex;gap:8px;margin-top:14px;flex-shrink:0}
 .filtros button{background:#1e1e1e;border:2px solid #333;color:#aaa;padding:6px 14px;border-radius:20px;cursor:pointer;font-size:13px;outline:none;transition:0.2s}
 .filtros button.activo{background:#0d5bff;color:#fff;border-color:#0d5bff}
 .filtros button.foco{ border-color:#fff!important; box-shadow:0 0 12px #fff, 0 0 20px #0d5bff!important; transform:scale(1.1); }
+
 .resultados{margin-top:16px;flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:4px}
+.resultados::-webkit-scrollbar{display:none}
+.resultados{scrollbar-width:none}
 .item{display:flex;align-items:center;gap:12px;padding:12px 14px;background:#161616;border-radius:10px;border:2px solid #222;color:#ddd;font-size:15px;cursor:pointer;outline:none;transition:0.2s}
 .item.activo{ background:#0d5bff!important; color:#fff!important; border-color:#0d5bff!important; }
 .item.foco{ border-color:#fff!important; box-shadow:0 0 12px #fff, 0 0 20px #0d5bff!important; transform:scale(1.02); }
-.teclado-tv{display:flex;flex-direction:column;gap:6px;margin-top:12px;background:#161616;border:1px solid #333;border-radius:12px;padding:12px}
+
+.teclado-tv{display:flex;flex-direction:column;gap:6px;margin-top:12px;background:#161616;border:1px solid #333;border-radius:12px;padding:12px;flex-shrink:0}
 .fila-teclas{display:flex;gap:6px;justify-content:center}
 .fila-teclas button{background:#2a2a2a;border:2px solid #444;color:#fff;padding:8px 10px;border-radius:8px;min-width:36px;font-size:13px;cursor:pointer;outline:none;transition:0.2s}
 .fila-teclas button.foco{ border-color:#fff!important; box-shadow:0 0 12px #fff, 0 0 20px #0d5bff!important; transform:scale(1.2); background:#fff!important; color:#000!important; }
 
-/* SE APAGA EL GLOW */
-.oculto.foco{ opacity:0.3; box-shadow:none!important; }
+/* AUTO APAGADO GLOW A LOS 10 SEG */
+body.oculto.foco{ opacity:0.35; box-shadow:none!important; transform:none!important; }
 </style>
 </head>
 <body>
@@ -42,10 +58,12 @@ body{background:#000;height:100vh;overflow:hidden}
 <div class="container">
 <div class="menu-box">
 <div class="menu" id="menu">
-<a>🔍 Buscar</a><a>⭐ Favoritos</a><a>📶 TV-Espanol</a><a>📶 TV-English</a><a>🎬 Peliculas</a><a>🎬 Movies</a><a>📺 Series</a><a>📺 Series Sub</a><a>🙂 KidZone</a><a>🏃 Ondeman - Sport</a><a>🏃 Live TV - Sport</a><a>📶 Zona Music</a><a>📶 24/7</a><a>🔞 Adult Live</a><a>🔞 Adult VOD</a><a>⚙️ Configuraciones</a>
+<a>🔍 Buscar</a><a>⭐ Favoritos</a><a>📶 TV-Espanol</a><a>📶 TV-English</a><a>🎬 Peliculas</a><a>🎬 Movies</a><a>📶 Zona Music</a><a>📶 24/7</a><a>🔞 Adult Live</a><a>🔞 Adult VOD</a><a>⚙️ Configuraciones</a>
+<a>📺 Series</a><a>📺 Series Sub</a><a>🙂 KidZone</a><a>🏃 Ondeman - Sport</a><a>🏃 Live TV - Sport</a>
 </div>
-<div class="menu-footer">Cuenta: 47810922<br>Vence: 15/05/2028</div>
+<div class="menu-footer">Cuenta de Usuario: 47810922<br>La cuenta vence el 15/05/2028</div>
 </div>
+
 <div class="buscar-box">
 <div class="search-input" id="boxInput">🔍 <input type="text" id="buscador" placeholder="Escribe película, serie o canal..."></div>
 <div class="teclado-tv" id="tecladoTV">
@@ -53,12 +71,13 @@ body{background:#000;height:100vh;overflow:hidden}
 <div class="fila-teclas"><button>K</button><button>L</button><button>M</button><button>N</button><button>O</button><button>P</button><button>Q</button><button>R</button><button>S</button><button>T</button></div>
 <div class="fila-teclas"><button>U</button><button>V</button><button>W</button><button>X</button><button>Y</button><button>Z</button><button>0</button><button>1</button><button>2</button><button>3</button><button>ESPACIO</button><button>⌫</button></div>
 </div>
-<div class="filtros" id="filtros"><button>Todo</button><button>Canales</button><button>Películas</button><button>Series</button></div>
+<div class="filtros" id="filtros"><button class="activo">Todo</button><button>Canales</button><button>Películas</button><button>Series</button></div>
 <div class="resultados" id="lista">
 <div class="item">📺 Antena 3 HD</div><div class="item">📺 Telecinco HD</div><div class="item">🎬 Gladiador 2</div><div class="item">📺 La Casa de Papel</div><div class="item">📺 Azteca Siete</div><div class="item">📺 ESPN Deportes</div>
 </div>
 </div>
 </div>
+
 <script>
 const input=document.getElementById('buscador');
 const boxInput=document.getElementById('boxInput');
@@ -66,51 +85,32 @@ const menuItems=document.querySelectorAll('#menu a');
 const tecladoBtns=document.querySelectorAll('#tecladoTV button');
 const filtroBtns=document.querySelectorAll('#filtros button');
 const getLista=()=>document.querySelectorAll('#lista.item');
-
 let zona='menu', mPos=0, tPos=0, fPos=0, lPos=0;
 let timer;
-
-function resetTimer(){
-  document.body.classList.remove('oculto');
-  clearTimeout(timer);
-  timer=setTimeout(()=>{ document.body.classList.add('oculto'); },10000); // 10 SEG SE APAGA
-}
-
+function resetTimer(){ document.body.classList.remove('oculto'); clearTimeout(timer); timer=setTimeout(()=>{document.body.classList.add('oculto')},10000); }
 function quitarFocos(){ document.querySelectorAll('.foco').forEach(e=>e.classList.remove('foco')); }
 function enfocar(){
-  quitarFocos();
-  resetTimer();
+  quitarFocos(); resetTimer();
   if(zona==='menu') menuItems[mPos]?.classList.add('foco');
   if(zona==='input') boxInput.classList.add('foco');
   if(zona==='teclado') tecladoBtns[tPos]?.classList.add('foco');
   if(zona==='filtros') filtroBtns[fPos]?.classList.add('foco');
   if(zona==='lista') getLista()[lPos]?.classList.add('foco');
+  menuItems[mPos]?.scrollIntoView({block:'nearest'});
 }
-
 function seleccionar(){
-  document.querySelectorAll('.activo').forEach(e=>e.classList.remove('activo'));
-  if(zona==='menu') menuItems[mPos]?.classList.add('activo');
-  if(zona==='input') boxInput.classList.add('activo');
-  if(zona==='filtros') filtroBtns[fPos]?.classList.add('activo');
-  if(zona==='lista') getLista()[lPos]?.classList.add('activo');
+  if(zona==='menu' || zona==='filtros' || zona==='lista'){
+    document.querySelectorAll('.activo').forEach(e=>e.classList.remove('activo'));
+    if(zona==='menu') menuItems[mPos]?.classList.add('activo');
+    if(zona==='filtros') filtroBtns[fPos]?.classList.add('activo');
+    if(zona==='lista') getLista()[lPos]?.classList.add('activo');
+  }
 }
-
-// Inicial: Buscar activo
 menuItems[0].classList.add('activo');
-
-tecladoBtns.forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    let t=btn.textContent;
-    if(t==='⌫') input.value=input.value.slice(0,-1);
-    else if(t==='ESPACIO') input.value+=' ';
-    else input.value+=t;
-  });
-});
-
+tecladoBtns.forEach(btn=>{ btn.addEventListener('click', ()=>{ let t=btn.textContent; if(t==='⌫') input.value=input.value.slice(0,-1); else if(t==='ESPACIO') input.value+=' '; else input.value+=t; }); });
 document.addEventListener('keydown', (e)=>{
   const lista=getLista();
   if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key)) e.preventDefault();
-
   if(e.key==='ArrowDown'){
     if(zona==='menu') mPos=Math.min(mPos+1,menuItems.length-1);
     else if(zona==='input'){zona='teclado'; tPos=0;}
@@ -135,15 +135,11 @@ document.addEventListener('keydown', (e)=>{
     else if(zona==='filtros'){ if(fPos===0) zona='menu'; else fPos--; }
     else if(zona==='lista' || zona==='input') zona='menu';
   }
-  if(e.key==='Enter'){
-    seleccionar(); // AQUI RECIEN SE PONE AZUL DONDE ESTAS
-    if(zona==='teclado') tecladoBtns[tPos]?.click();
-  }
+  if(e.key==='Enter'){ seleccionar(); if(zona==='teclado') tecladoBtns[tPos]?.click(); }
+  if(e.key==='Escape' || e.key==='Backspace'){ zona='menu'; }
   enfocar();
 });
-
-enfocar();
-resetTimer();
+enfocar(); resetTimer();
 </script>
 </body>
 </html>
