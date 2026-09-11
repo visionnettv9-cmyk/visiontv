@@ -31,7 +31,11 @@ body{background:#0a0a0a;color:#fff;overflow:hidden}
 .infologo{width:140px;height:85px;background:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:4px solid #ff00ff;flex-shrink:0}
 .infologo img{width:90%;height:90%;object-fit:contain}
 .bar-info{flex:1;background:linear-gradient(90deg,#0000ff,#ff00ff);padding:12px 15px;border-radius:8px;display:flex;justify-content:space-between;align-items:center}
-#sideMenu{position:absolute;left:0;top:0;width:360px;height:100%;background:rgba(0,0,0,.97);display:none;padding:0;overflow-y:auto;border-right:2px solid #333;z-index:102}
+#sideMenu{position:absolute;left:0;top:0;width:380px;height:100%;background:rgba(0,0,0,0.65);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:none;padding:0;overflow-y:auto;border-right:1px solid rgba(255,255,255,0.1);z-index:102}
+.canal{background:rgba(0,0,0,0.3);border-bottom:1px solid rgba(255,255,255,0.08)}
+.canal.activo{background:rgba(0,102,255,0.85)!important;backdrop-filter:blur(5px)}
+#infobar{background:transparent;bottom:15px}
+.bar-info{background:linear-gradient(90deg,rgba(0,0,255,0.75),rgba(255,0,255,0.75));backdrop-filter:blur(10px)}
 </style>
 </head>
 <body>
