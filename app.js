@@ -15,6 +15,13 @@ let zona = 'menu', mPos = 0, tPos = 0, fPos = 0, lPos = 0, favPos = 0;
 let modoActual = 'preview'; // 'preview', 'buscador', 'favoritos'
 let categoriaActual = 'todo';
 
+// --- GUARDAR TEXTO ORIGINAL DE CADA ITEM ---
+document.querySelectorAll('#lista .item').forEach(item => {
+  if (!item.dataset.nombreOriginal) {
+    item.dataset.nombreOriginal = item.textContent.trim();
+  }
+});
+
 // --- MÓDULO DE FAVORITOS (localStorage) ---
 let misFavoritos = JSON.parse(localStorage.getItem('visiontv_favs')) || [];
 
@@ -31,24 +38,26 @@ function toggleFavorito(id) {
   }
   guardarFavoritos();
   actualizarIconosFavoritos();
-  if (modoActual === 'favoritos') cargarVistaFavoritos();
+  if (modoActual === 'favoritos') {
+    cargarVistaFavoritos();
+  }
 }
 
 function actualizarIconosFavoritos() {
   document.querySelectorAll('#lista .item').forEach(item => {
     const id = item.dataset.id;
     const esFav = misFavoritos.includes(id);
-    let textoBase = item.dataset.textoBase || item.textContent.replace(' ⭐', '');
-    item.dataset.textoBase = textoBase;
-    item.textContent = esFav ? `${textoBase} ⭐` : textoBase;
+    const nombreBase = item.dataset.nombreOriginal;
+    
+    item.textContent = esFav ? `${nombreBase} ⭐` : nombreBase;
   });
 }
 
 function cargarVistaFavoritos() {
   listaFavoritosContenedor.innerHTML = '';
   const itemsOriginales = document.querySelectorAll('#lista .item');
-  
   let contador = 0;
+
   itemsOriginales.forEach(item => {
     if (misFavoritos.includes(item.dataset.id)) {
       const clon = item.cloneNode(true);
@@ -59,7 +68,13 @@ function cargarVistaFavoritos() {
   });
 
   if (contador === 0) {
-    listaFavoritosContenedor.innerHTML = '<p style="color:#888;">No tienes favoritos guardados.</p>';
+    listaFavoritosContenedor.innerHTML = '<p style="color:#888; padding:10px;">No tienes elementos guardados en Favoritos.</p>';
+  }
+
+  // Ajustar posición si la lista cambia
+  const favsVisibles = getFavVisibles();
+  if (favPos >= favsVisibles.length) {
+    favPos = Math.max(0, favsVisibles.length - 1);
   }
 }
 
@@ -68,7 +83,8 @@ const getVisibles = () => Array.from(document.querySelectorAll('#lista .item')).
 const getFavVisibles = () => Array.from(document.querySelectorAll('#listaFavoritos .item'));
 
 function getTextoLimpio(el) {
-  return el.textContent.replace(/^[^\wáéíóúñ]+/i, '').replace(' ⭐', '').trim().toLowerCase();
+  const texto = el.dataset.nombreOriginal || el.textContent;
+  return texto.replace(/^[^\wáéíóúñ]+/i, '').replace(' ⭐', '').trim().toLowerCase();
 }
 
 function filtrarResultados() {
@@ -204,9 +220,9 @@ function seleccionar() {
 
   if (zona === 'favoritos') {
     const favs = getFavVisibles();
-    if (favs[favPos]) {
+    if (favs.length > 0 && favs[favPos]) {
       const id = favs[favPos].dataset.id;
-      toggleFavorito(id);
+      toggleFavorito(id); // Al dar enter en favoritos se remueve y refresca la lista
     }
   }
 
