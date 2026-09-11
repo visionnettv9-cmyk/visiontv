@@ -5,36 +5,29 @@
 <title>VISIONTV</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
-body{background:#0a0a0a;color:#fff;height:100vh;overflow:hidden;
-background-image:repeating-linear-gradient(115deg, #0e0e0e 0px, #0e0e0e 18px, #180000 18px, #2b0000 19px, #000 20px, #000 40px);
-}
+body{background:#0a0a0a;color:#fff;height:100vh;overflow:hidden;background-image:repeating-linear-gradient(115deg,#0e0e0e 0 18px,#180000 18px,#2b0000 19px,#000 20px,#000 40px)}
 .top{height:60px;background:#000;display:flex;justify-content:space-between;align-items:center;padding:0 25px;border-bottom:1px solid #222}
-.logo{font-weight:900;font-size:28px;color:#ff0000;font-style:italic}
-.logo span{color:#fff}
+.logo{font-weight:900;font-size:28px;color:#ff0000;font-style:italic} .logo span{color:#fff}
 .main{display:flex;height:calc(100vh - 100px)}
 .sidebar{width:320px;background:#000;border:1px solid #333;border-radius:12px;margin:15px;padding:10px 0;overflow-y:auto}
 .item{display:flex;align-items:center;gap:12px;padding:11px 18px;font-size:15px;cursor:pointer;margin:2px 8px;border-radius:6px;color:#ccc}
-.item.active{background:#1a5cff;color:#fff;font-weight:700}
-.item:hover{background:#222;color:#fff}
+.item.active{background:#1a5cff;color:#fff;font-weight:700} .item:hover{background:#1a1a1a;color:#fff}
 .content{flex:1;margin:15px;background:rgba(0,0,0,0.7);border-radius:12px;border:1px solid #222;padding:15px;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;align-content:start}
-.card{background:#111;border-radius:8px;overflow:hidden;border:1px solid #222;cursor:pointer}
-.card img{width:100%;height:90px;object-fit:cover}
-.card div{padding:8px;font-size:12px;text-align:center}
+.card{background:#111;border-radius:8px;overflow:hidden;border:1px solid #222}
+.card img{width:100%;height:90px;object-fit:cover} .card div{padding:8px;font-size:12px;text-align:center}
 .footer{height:70px;background:#000;border-top:1px solid #222;display:flex;justify-content:space-between;align-items:center;padding:0 25px;font-size:11px;color:#777}
-.platforms{display:flex;gap:8px;align-items:center}
 .p{background:#222;padding:6px 12px;border-radius:5px;color:#fff;font-weight:800;font-size:10px}
 .p.and{background:#3ddc84;color:#000} .p.fire{background:#ff9900} .p.mi{background:#ff6a00} .p.roku{background:#662d91}
 .vision-footer{font-size:22px;font-style:italic;font-weight:900;color:#fff} .vision-footer span{color:#ff0000}
-.hero{position:absolute;inset:0;top:60px;background:linear-gradient(90deg,#000 20%,rgba(0,0,0,0.5)), url('./hero.jpg');background-size:cover;background-position:center;display:flex;align-items:center;padding-left:5%;z-index:10}
+.hero{position:absolute;inset:0;top:60px;background:linear-gradient(90deg,#000 25%,rgba(0,0,0,0.3)), url('./hero.jpg');background-size:cover;background-position:center;display:flex;align-items:center;padding-left:5%;z-index:10}
 .hero-box{max-width:500px} .badge{background:#ff0000;padding:6px 12px;font-size:10px;font-weight:900;display:inline-block;margin-bottom:15px}
 .hero h1{font-size:60px;line-height:0.9;font-family:Arial Black} .hero h1 span{color:#ff0000}
 .btn{margin-top:20px;background:#ff0000;border:none;padding:14px 30px;color:#fff;font-weight:900;border-radius:4px;cursor:pointer}
 </style>
 </head>
 <body>
-<div class="top"><div class="logo">VISION<span>TV</span></div><div style="font-size:11px;color:#666">https://visionnettv9-cmyk.github.io/visiontv/</div></div>
+<div class="top"><div class="logo">VISION<span>TV</span></div></div>
 
-<!-- PORTADA -->
 <div id="portada" class="hero">
   <div class="hero-box">
     <div class="badge">FIFA WORLD CUP 2026 • MEXICO - USA - CANADA • EN VIVO</div>
@@ -43,44 +36,37 @@ background-image:repeating-linear-gradient(115deg, #0e0e0e 0px, #0e0e0e 18px, #1
   </div>
 </div>
 
-<!-- MENU ESTILO ZONATV -->
 <div class="main" id="app" style="display:none">
   <div class="sidebar" id="menu">
+    <div class="item" onclick="sel(this,'Buscar')">🔍 Buscar</div>
+    <div class="item" onclick="sel(this,'Favoritos')">⭐ Favoritos</div>
     <div class="item active" onclick="sel(this,'TV-Español')">📡 TV-Español</div>
     <div class="item" onclick="sel(this,'TV-English')">📡 TV-English</div>
     <div class="item" onclick="sel(this,'Peliculas')">🎞️ Peliculas</div>
     <div class="item" onclick="sel(this,'Movies')">🎞️ Movies</div>
     <div class="item" onclick="sel(this,'Series')">📺 Series</div>
+    <div class="item" onclick="sel(this,'Series Sub')">📺 Series Sub</div>
     <div class="item" onclick="sel(this,'KidZone')">😊 KidZone</div>
-    <div class="item" onclick="sel(this,'Sports')">🏅 Live TV - Sport</div>
-    <div class="item" onclick="sel(this,'Music')">🎵 Zona Music</div>
+    <div class="item" onclick="sel(this,'Ondeman - Sport')">🏅 Ondeman - Sport</div>
+    <div class="item" onclick="sel(this,'Live TV - Sport')">🏃 Live TV - Sport</div>
+    <div class="item" onclick="sel(this,'Zona Music')">📡 Zona Music</div>
     <div class="item" onclick="sel(this,'24/7')">📡 24/7</div>
-    <div class="item" onclick="sel(this,'Config')">⚙️ Configuraciones</div>
+    <div class="item" onclick="sel(this,'Adult Live')">🔞 Adult Live</div>
+    <div class="item" onclick="sel(this,'Adult VOD')">🔞 Adult VOD</div>
+    <div class="item" onclick="sel(this,'Configuraciones')">⚙️ Configuraciones</div>
   </div>
   <div class="content" id="content"></div>
 </div>
 
 <div class="footer">
   <div>Cuenta de Usuario: visionnettv9-cmyk<br>La cuenta vence el 15/05/2028 - VISIONTV FIFA 2026</div>
-  <div class="platforms"><div class="p and">ANDROID</div><div class="p fire">fire tv</div><div class="p mi">mi</div><div class="p roku">Roku</div><div class="vision-footer">VISION <span>TV</span></div></div>
+  <div style="display:flex;gap:8px;align-items:center"><div class="p and">ANDROID</div><div class="p fire">fire tv</div><div class="p mi">mi</div><div class="p roku">Roku</div><div class="vision-footer">VISION <span>TV</span></div></div>
 </div>
 
 <script>
-function entrar(){
- document.getElementById('portada').style.display='none';
- document.getElementById('app').style.display='flex';
- load('TV-Español');
-}
-function sel(el,n){
- document.querySelectorAll('.item').forEach(i=>i.classList.remove('active')); el.classList.add('active');
- load(n);
-}
-function load(cat){
- let c=document.getElementById('content'); c.innerHTML='';
- for(let i=1;i<=18;i++){
-  c.innerHTML+=`<div class="card"><img src="https://picsum.photos/seed/${cat+i}/300/180"><div>${cat} ${i}</div></div>`;
- }
-}
+function entrar(){document.getElementById('portada').style.display='none';document.getElementById('app').style.display='flex';load('TV-Español');}
+function sel(el,n){document.querySelectorAll('.item').forEach(i=>i.classList.remove('active'));el.classList.add('active');load(n);}
+function load(cat){let c=document.getElementById('content');c.innerHTML='';for(let i=1;i<=20;i++){c.innerHTML+=`<div class="card"><img src="https://picsum.photos/seed/${cat}${i}/300/180"><div>${cat} ${i}</div></div>`;}}
 </script>
 </body>
 </html>
