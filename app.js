@@ -15,10 +15,10 @@ let zona = 'menu', mPos = 0, tPos = 0, fPos = 0, lPos = 0, favPos = 0;
 let modoActual = 'preview'; // 'preview', 'buscador', 'favoritos'
 let categoriaActual = 'todo';
 
-// --- GUARDAR TEXTO ORIGINAL DE CADA ITEM ---
+// Guardar el nombre base de los items para no duplicar estrellas
 document.querySelectorAll('#lista .item').forEach(item => {
-  if (!item.dataset.nombreOriginal) {
-    item.dataset.nombreOriginal = item.textContent.trim();
+  if (!item.dataset.nombreBase) {
+    item.dataset.nombreBase = item.textContent.replace(' ⭐', '').trim();
   }
 });
 
@@ -38,6 +38,8 @@ function toggleFavorito(id) {
   }
   guardarFavoritos();
   actualizarIconosFavoritos();
+  
+  // Si estamos dentro de la pantalla de favoritos, refrescar al instante
   if (modoActual === 'favoritos') {
     cargarVistaFavoritos();
   }
@@ -47,34 +49,33 @@ function actualizarIconosFavoritos() {
   document.querySelectorAll('#lista .item').forEach(item => {
     const id = item.dataset.id;
     const esFav = misFavoritos.includes(id);
-    const nombreBase = item.dataset.nombreOriginal;
-    
-    item.textContent = esFav ? `${nombreBase} ⭐` : nombreBase;
+    const nombre = item.dataset.nombreBase;
+    item.textContent = esFav ? `${nombre} ⭐` : nombre;
   });
 }
 
 function cargarVistaFavoritos() {
   listaFavoritosContenedor.innerHTML = '';
   const itemsOriginales = document.querySelectorAll('#lista .item');
-  let contador = 0;
+  let guardados = 0;
 
   itemsOriginales.forEach(item => {
     if (misFavoritos.includes(item.dataset.id)) {
       const clon = item.cloneNode(true);
       clon.classList.remove('foco', 'activo');
       listaFavoritosContenedor.appendChild(clon);
-      contador++;
+      guardados++;
     }
   });
 
-  if (contador === 0) {
-    listaFavoritosContenedor.innerHTML = '<p style="color:#888; padding:10px;">No tienes elementos guardados en Favoritos.</p>';
+  if (guardados === 0) {
+    listaFavoritosContenedor.innerHTML = '<p style="color:#888; padding:10px;">No tienes elementos guardados.</p>';
   }
 
-  // Ajustar posición si la lista cambia
-  const favsVisibles = getFavVisibles();
-  if (favPos >= favsVisibles.length) {
-    favPos = Math.max(0, favsVisibles.length - 1);
+  // Ajustar posición si se eliminó el último item
+  const favs = getFavVisibles();
+  if (favPos >= favs.length) {
+    favPos = Math.max(0, favs.length - 1);
   }
 }
 
@@ -83,7 +84,7 @@ const getVisibles = () => Array.from(document.querySelectorAll('#lista .item')).
 const getFavVisibles = () => Array.from(document.querySelectorAll('#listaFavoritos .item'));
 
 function getTextoLimpio(el) {
-  const texto = el.dataset.nombreOriginal || el.textContent;
+  const texto = el.dataset.nombreBase || el.textContent;
   return texto.replace(/^[^\wáéíóúñ]+/i, '').replace(' ⭐', '').trim().toLowerCase();
 }
 
@@ -222,7 +223,7 @@ function seleccionar() {
     const favs = getFavVisibles();
     if (favs.length > 0 && favs[favPos]) {
       const id = favs[favPos].dataset.id;
-      toggleFavorito(id); // Al dar enter en favoritos se remueve y refresca la lista
+      toggleFavorito(id); // Quitar de favoritos al pulsar Enter sobre él
     }
   }
 
@@ -235,7 +236,7 @@ function seleccionar() {
   }
 }
 
-// --- CONTROLES DE TECLADO / SMART TV ---
+// --- CONTROLES TECLADO Y CONTROL REMOTO ---
 document.addEventListener('keydown', e => {
   if (['Escape', 'Backspace'].includes(e.key) || [10009, 461].includes(e.keyCode)) {
     if (modoActual !== 'preview' && document.activeElement !== buscador) {
