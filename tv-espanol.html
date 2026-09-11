@@ -2,13 +2,13 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>History - VISIONTV</title>
+<title>VISIONTV - TV Español</title>
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial, sans-serif}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
 body{background:#000;color:#fff;overflow:hidden;height:100vh}
 #player{width:100vw;height:100vh;position:relative;background:#000}
-#player video{width:100%;height:100%;object-fit:cover}
+#player video{width:100%;height:100%;object-fit:contain;background:#000}
 #sideMenu{position:absolute;left:15px;top:15px;width:360px;max-height:75vh;background:rgba(0,0,0,0.78);backdrop-filter:blur(6px);overflow-y:auto;z-index:10;border:1px solid rgba(255,255,255,0.1)}
 .canal{display:flex;align-items:center;padding:7px 10px;cursor:pointer;gap:10px;font-size:15px}
 .canal.c-logo{width:52px;height:28px;background:#fff;border-radius:2px;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0}
@@ -25,71 +25,86 @@ body{background:#000;color:#fff;overflow:hidden;height:100vh}
 .hora{margin-left:auto;font-size:13px;font-weight:700}
 .titulo-canal{font-size:32px;font-weight:300;line-height:1}
 .subtitulo{font-size:14px;color:#ccc}
+#loading{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:20px;z-index:5}
 </style>
 </head>
 <body>
 <div id="player">
-  <video id="video" autoplay muted></video>
+  <div id="loading">Cargando canales...</div>
+  <video id="video" autoplay muted playsinline></video>
   <div id="sideMenu"></div>
   <div id="bottom">
     <div class="logo-grande"><img id="bigLogo" src=""></div>
     <div class="info-col">
       <div class="barra-azul">
         <div class="mini-logo"><img id="miniLogo" src=""></div>
-        <span id="progName" style="font-size:13px">Sin información</span>
-        <span class="hora" id="hora">02:11 AM | 11/09/2026</span>
+        <span id="progName" style="font-size:13px">En vivo</span>
+        <span class="hora" id="hora">--:--</span>
       </div>
-      <div class="titulo-canal" id="canalName">History</div>
-      <div class="subtitulo" id="canalDesc">Sin información</div>
+      <div class="titulo-canal" id="canalName">VISIONTV</div>
+      <div class="subtitulo" id="canalDesc">Selecciona un canal</div>
     </div>
   </div>
 </div>
 <script>
-const CANALES = [
- {nombre:"Discovery Tlc", logo:"https://upload.wikimedia.org/wikipedia/commons/5/5a/TLC_logo.svg", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
- {nombre:"Discovery Theater", logo:"https://via.placeholder.com/100x50?text=THEATER", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
- {nombre:"Discovery Science", logo:"https://upload.wikimedia.org/wikipedia/commons/3/33/Discovery_Science_logo.png", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
- {nombre:"Discovery HH", logo:"https://via.placeholder.com/100x50?text=h%26h", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
- {nombre:"Discovery World", logo:"https://via.placeholder.com/100x50?text=world", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
- {nombre:"History", logo:"https://upload.wikimedia.org/wikipedia/commons/7/7a/History_logo.svg", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
- {nombre:"History 2", logo:"https://via.placeholder.com/100x50?text=H2", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
- {nombre:"Discovery ID", logo:"https://via.placeholder.com/100x50?text=ID", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
- {nombre:"LifeTime", logo:"https://via.placeholder.com/100x50?text=Lifetime", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
- {nombre:"Nat Geo", logo:"https://upload.wikimedia.org/wikipedia/commons/f/f2/Nat_Geo_logo.svg", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
- {nombre:"Nat Geo Wild", logo:"https://upload.wikimedia.org/wikipedia/commons/3/30/Nat_Geo_Wild_logo.svg", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
- {tipo:"sep", nombre:"DEPORTES"},
- {nombre:"Aym Sports", logo:"https://via.placeholder.com/100x50?text=Aym", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
- {nombre:"Bein Sport N", logo:"https://via.placeholder.com/100x50?text=beIN", url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
-];
-let sel=5;
+let CANALES = [];
+let sel = 0;
+let hls = null;
+
+async function cargarCanales(){
+  try{
+    // ESTA ES TU IP QUE YA JALA
+    const res = await fetch('http://192.168.1.2:3000/api/canales');
+    const data = await res.json();
+    // Soporta tanto { "TV-Español": [...] } como array directo
+    CANALES = data["TV-Español"] || data["TV-Espanol"] || data.canales || data;
+    if(!Array.isArray(CANALES) || CANALES.length==0) throw "vacio";
+    document.getElementById('loading').style.display='none';
+    render(); update();
+  }catch(e){
+    document.getElementById('loading').innerText = "Error: No conecta a 192.168.1.2:3000 - Verifica que el server este prendido";
+    console.error(e);
+  }
+}
+
 function play(url){
  let v=document.getElementById('video');
- if(Hls.isSupported()){let h=new Hls();h.loadSource(url);h.attachMedia(v);}else{v.src=url;}
+ if(hls){hls.destroy(); hls=null;}
+ if(Hls.isSupported()){
+   hls=new Hls({enableWorker:true});
+   hls.loadSource(url);
+   hls.attachMedia(v);
+   hls.on(Hls.Events.MANIFEST_PARSED,()=>v.play());
+ }else{v.src=url; v.play();}
 }
+
 function render(){
  let m=document.getElementById('sideMenu'); m.innerHTML="";
  CANALES.forEach((c,i)=>{
   if(c.tipo=="sep"){m.innerHTML+=`<div class="canal separador">${c.nombre}</div>`;return}
   let d=document.createElement('div'); d.className='canal'+(i==sel?' activo':'');
-  d.innerHTML=`<div class="c-logo"><img src="${c.logo}"></div><span>${c.nombre}</span>`;
+  d.innerHTML=`<div class="c-logo"><img src="${c.logo}" onerror="this.src='https://via.placeholder.com/100x50?text=TV'"></div><span>${c.nombre}</span>`;
   d.onclick=()=>{sel=i;update();};
   m.appendChild(d);
  });
 }
+
 function update(){
  let c=CANALES[sel]; if(!c||c.tipo=="sep")return;
  document.getElementById('canalName').innerText=c.nombre;
  document.getElementById('bigLogo').src=c.logo;
  document.getElementById('miniLogo').src=c.logo;
- document.getElementById('progName').innerText="Sin información";
+ document.getElementById('canalDesc').innerText=c.nombre + " - En vivo";
  play(c.url); render();
 }
+
 document.addEventListener('keydown',e=>{
  if(e.key=="ArrowDown"){do{sel=(sel+1)%CANALES.length}while(CANALES[sel].tipo=="sep");update()}
  if(e.key=="ArrowUp"){do{sel=(sel-1+CANALES.length)%CANALES.length}while(CANALES[sel].tipo=="sep");update()}
 });
 setInterval(()=>{let d=new Date();document.getElementById('hora').innerText=d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+" | "+d.toLocaleDateString()},1000);
-render(); update();
+
+cargarCanales();
 </script>
 </body>
 </html>
