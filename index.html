@@ -4,83 +4,82 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VISIONTV</title>
+  <!-- Vinculamos la hoja de estilos externa -->
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-  <div class="fondo"></div>
+<div class="fondo"></div>
 
-  <div class="container">
+<div class="container">
 
-    <!-- MENÚ IZQUIERDO -->
-    <div class="menu-box">
-      <div class="menu" id="menu">
-        <a data-img="hero.jpg" class="active">🔍 Buscar</a>
-        <a data-img="hero.jpg">⭐ Favoritos</a>
-        <a>📶 TV-Espanol</a>
-        <a>📶 TV-English</a>
-        <a>🎬 Peliculas</a>
-        <a>🎬 Movies</a>
-        <a>📺 Series</a>
-        <a>📺 Series Sub</a>
-        <a>🤪 KidZone</a>
-        <a>🏃 Ondeman - Sport</a>
-        <a>🏃 Live TV - Sport</a>
-        <a>📶 Zona Music</a>
-        <a>📶 24/7</a>
-        <a>🔞 Adult Live</a>
-        <a>🔞 Adult VOD</a>
-        <a>⚙️ Configuraciones</a>
-      </div>
-
-      <div class="account-info">
-        Cuenta: 47810922<br>
-        Vence: 15/05/2028
-      </div>
+  <!-- MENÚ IZQUIERDO -->
+  <div class="menu-box">
+    <div class="menu" id="menu">
+      <a data-img="hero.jpg">🔍 Buscar</a>
+      <a data-img="hero.jpg">⭐ Favoritos</a>
+      <a data-img="hero.jpg">📶 TV-Espanol</a>
+      <a data-img="hero.jpg">📶 TV-English</a>
+      <a data-img="hero.jpg">🎬 Peliculas</a>
+      <a data-img="hero.jpg">🎬 Movies</a>
+      <a data-img="hero.jpg">📺 Series</a>
+      <a data-img="hero.jpg">📺 Series Sub</a>
+      <a data-img="hero.jpg">🙂 KidZone</a>
+      <a data-img="hero.jpg">🏃 Ondeman - Sport</a>
+      <a data-img="hero.jpg">🏃 Live TV - Sport</a>
+      <a data-img="hero.jpg">📶 Zona Music</a>
+      <a data-img="hero.jpg">📶 24/7</a>
+      <a data-img="hero.jpg">🔞 Adult Live</a>
+      <a data-img="hero.jpg">🔞 Adult VOD</a>
+      <a data-img="hero.jpg">⚙️ Configuraciones</a>
     </div>
-
-    <!-- PANEL DERECHO -->
-    <div class="panel-contenido">
-
-      <!-- VISTA BUSCAR -->
-      <div id="vistaBuscar" class="vista active">
-        <div class="buscador">
-          <input type="text" id="inputBuscar" placeholder="Escribe para buscar..." readonly>
-          <div class="teclado">
-            <button>A</button><button>B</button><button>C</button><button>D</button><button>E</button><button>F</button><button>G</button><button>H</button><button>I</button><button>J</button>
-            <button>K</button><button>L</button><button>M</button><button>N</button><button>O</button><button>P</button><button>Q</button><button>R</button><button>S</button><button>T</button>
-            <button>U</button><button>V</button><button>W</button><button>X</button><button>Y</button><button>Z</button><button>0</button><button>1</button><button>2</button><button>3</button>
-            <button class="espacio">ESPACIO</button><button class="borrar">⌫</button>
-          </div>
-          <div class="filtros">
-            <button class="filtro active" data-filter="todo">Todo</button>
-            <button class="filtro" data-filter="canales">Canales</button>
-            <button class="filtro" data-filter="peliculas">Películas</button>
-            <button class="filtro" data-filter="series">Series</button>
-          </div>
-        </div>
-
-        <!-- LISTA CON IDs ÚNICOS DEL 1 AL 7 -->
-        <div class="resultados" id="lista">
-          <div class="item" data-id="1" data-cat="series" data-nombre-base="Teresa (2010)">📺 Teresa (2010)</div>
-          <div class="item" data-id="2" data-cat="peliculas" data-nombre-base="Terremoto en LA">🎬 Terremoto en LA</div>
-          <div class="item" data-id="3" data-cat="canales" data-nombre-base="Telecinco HD">📺 Telecinco HD</div>
-          <div class="item" data-id="4" data-cat="canales" data-nombre-base="Antena 3 HD">📺 Antena 3 HD</div>
-          <div class="item" data-id="5" data-cat="series" data-nombre-base="La Historia de Teresa">📺 La Historia de Teresa</div>
-          <div class="item" data-id="6" data-cat="peliculas" data-nombre-base="Gladiador 2">🎬 Gladiador 2</div>
-          <div class="item" data-id="7" data-cat="peliculas" data-nombre-base="Avatar 2">🎬 Avatar 2</div>
-        </div>
-      </div>
-
-      <!-- VISTA FAVORITOS -->
-      <div id="vistaFavoritos" class="vista-favoritos" style="display: none;">
-        <h2>⭐ Tus Favoritos</h2>
-        <div class="resultados" id="listaFavoritos"></div>
-      </div>
-
-    </div>
+    <div class="menu-footer">Cuenta: 47810922<br>Vence: 15/05/2028</div>
   </div>
 
-  <script src="app.js"></script>
+  <!-- LADO DERECHO -->
+  <div class="derecha-box">
+    <!-- VISTA PREVIA -->
+    <div id="vistaPreview" class="vista-preview"></div>
+
+    <!-- VISTA FAVORITOS -->
+    <div id="vistaFavoritos" class="vista-favoritos">
+      <h2>⭐ Tus Favoritos</h2>
+      <div class="resultados" id="listaFavoritos"></div>
+    </div>
+
+    <!-- VISTA BUSCADOR -->
+    <div id="vistaBuscador" class="vista-buscador">
+      <div class="search-input" id="boxInput">🔍 <input id="buscador" placeholder="Escribe para buscar..."></div>
+      
+      <div class="teclado-tv" id="tecladoTV">
+        <div class="fila-teclas"><button>A</button><button>B</button><button>C</button><button>D</button><button>E</button><button>F</button><button>G</button><button>H</button><button>I</button><button>J</button></div>
+        <div class="fila-teclas"><button>K</button><button>L</button><button>M</button><button>N</button><button>O</button><button>P</button><button>Q</button><button>R</button><button>S</button><button>T</button></div>
+        <div class="fila-teclas"><button>U</button><button>V</button><button>W</button><button>X</button><button>Y</button><button>Z</button><button>0</button><button>1</button><button>2</button><button>3</button><button>ESPACIO</button><button>⌫</button></div>
+      </div>
+      
+      <div class="filtros" id="filtros">
+        <button class="activo" data-cat="todo">Todo</button>
+        <button data-cat="canales">Canales</button>
+        <button data-cat="peliculas">Películas</button>
+        <button data-cat="series">Series</button>
+      </div>
+
+      <div class="resultados" id="lista">
+        <div class="item" data-id="1" data-cat="series">📺 Teresa (2010)</div>
+        <div class="item" data-id="2" data-cat="peliculas">🎬 Terremoto en LA</div>
+        <div class="item" data-id="3" data-cat="canales">📺 Telecinco HD</div>
+        <div class="item" data-id="4" data-cat="canales">📺 Antena 3 HD</div>
+        <div class="item" data-id="5" data-cat="series">📺 La Historia de Teresa</div>
+        <div class="item" data-id="6" data-cat="peliculas">🎬 Gladiador 2</div>
+        <div class="item" data-id="7" data-cat="peliculas">🎬 Avatar 2</div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Vinculamos el archivo JavaScript antes de cerrar el body -->
+<script src="app.js"></script>
 </body>
 </html>
