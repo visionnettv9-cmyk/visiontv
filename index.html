@@ -9,29 +9,28 @@
 body{background:#000;min-height:100vh;overflow:hidden}
 .bg{position:fixed;inset:0;background:#000;z-index:-1}
 .bg::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-30deg, transparent 0 80px, rgba(255,0,0,0.35) 80px 82px, transparent 82px 160px)}
-.container{display:flex;height:100vh;padding:18px;gap:18px}
-.menu{width:310px;background:rgba(10,10,10,0.9);border:1px solid #333;border-radius:15px;padding:15px 10px}
-.menu a{display:flex;align-items:center;gap:8px;padding:9px 12px;color:#bbb;text-decoration:none;font-size:17px;border-radius:6px;margin:2px 0}
-.menu a:hover{color:#fff;background:rgba(255,255,255,0.08)}
-.menu a.active{background:#0055ff;color:#fff;width:calc(100% + 20px);position:relative;left:-10px;padding-left:22px;font-weight:bold;box-shadow:0 0 20px rgba(0,85,255,0.7)}
-.portada{flex:1;background:#000;border:1px solid #333;border-radius:12px;overflow:hidden;background-size:cover;background-position:center}
-/* CAMBIA TU PORTADA AQUI - sube una imagen llamada hero.jpg a tu repo */
-.portada{background-image:url('hero.jpg');background-color:#000}
-.footer{position:fixed;bottom:12px;left:20px;right:20px;display:flex;justify-content:space-between;align-items:flex-end;color:#aaa;font-size:12px;pointer-events:none}
-.footer b{font-size:22px;color:#fff;letter-spacing:1px}
-.footer b span{color:#ff0000}
+.container{display:flex;height:85vh;padding:18px 18px 0 18px;gap:18px}
+.menu{width:310px;background:rgba(10,10,10,0.95);border:1px solid #333;border-radius:15px;display:flex;flex-direction:column;justify-content:space-between;padding:15px 10px}
+.menu-top{flex:1;overflow-y:auto}
+.menu a{display:flex;padding:7px 12px;color:#bbb;text-decoration:none;font-size:16px;border-radius:6px;margin:1px 0}
+.menu a.active{background:#0055ff;color:#fff;width:calc(100% + 20px);margin-left:-10px;padding-left:22px;font-weight:bold;box-shadow:0 0 15px rgba(0,85,255,0.6)}
+.menu-bottom{padding:15px 5px 5px 5px;border-top:1px solid #222;margin-top:15px;font-size:11px;color:#777;line-height:15px}
+.portada{flex:1;background:#000;border:1px solid #333;border-radius:12px;background-image:url('hero.jpg');background-size:cover;background-position:center}
+.bottom-bar{height:15vh;display:flex;align-items:flex-end;justify-content:space-between;padding:0 20px 15px 20px;color:#666;font-size:11px}
+.logo-corner{font-size:20px;font-weight:900;color:#fff} .logo-corner span{color:red}
 </style>
 </head>
 <body>
 <div class="bg"></div>
 <div class="container">
 <div class="menu">
+<div class="menu-top">
 <a href="#">🔍 Buscar</a>
-<a href="#" style="background:rgba(255,255,255,0.08)">⭐ Favoritos</a>
+<a href="#">⭐ Favoritos</a>
 <a href="tv-espanol.html" class="active">📶 TV-Espanol</a>
 <a href="tv-english.html">📶 TV-English</a>
 <a href="peliculas.html">🎞️ Peliculas</a>
-<a href="movies.html">🎞️ Movies</a>
+<a href="movies.html">🎬 Movies</a>
 <a href="series.html">📺 Series</a>
 <a href="series-sub.html">📺 Series Sub</a>
 <a href="kidzone.html">🙂 KidZone</a>
@@ -43,11 +42,13 @@ body{background:#000;min-height:100vh;overflow:hidden}
 <a href="adult-vod.html">🔞 Adult VOD</a>
 <a href="config.html">⚙️ Configuraciones</a>
 </div>
-<div class="portada" id="portada"></div>
+<div class="menu-bottom">Cuenta de Usuario: visionnettv9-cmyk<br>La cuenta vence el 15/05/2028</div>
 </div>
-<div class="footer">
-<div>Cuenta de Usuario: visionnettv9-cmyk<br>La cuenta vence el 15/05/2028</div>
-<div><b>VISION<span>TV</span></b></div>
+<div class="portada"></div>
+</div>
+<div class="bottom-bar">
+<div></div>
+<div class="logo-corner">VISION<span>TV</span></div>
 </div>
 </body>
 </html>
