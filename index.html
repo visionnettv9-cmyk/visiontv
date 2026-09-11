@@ -51,24 +51,27 @@ body{background:#000;height:100vh;overflow:hidden}
   background-image: url('hero.jpg');
   background-position: center;
   background-repeat: no-repeat;
-  background-size: contain; /* Mantiene la proporción correcta de la imagen sin deformarla */
+  background-size: contain;
   border: 1px solid #222;
   transition: background-image 0.25s ease-in-out;
 }
 
-/* VISTA DEL BUSCADOR */
+/* VISTA DEL BUSCADOR REDUCIDA (ZONA VERDE - ANCHO 580PX) */
 .vista-buscador{
-  display:none; /* Oculto por defecto hasta presionar Enter en Buscar */
+  display:none;
   flex-direction:column;
-  flex:1;
+  width:580px;
   height:100%;
-  overflow:hidden;
   background:#0e0e0e;
   padding:15px;
   border-radius:12px;
+  border: 1px solid #333;
+  overflow-y:auto;
+  scrollbar-width:none;
 }
+.vista-buscador::-webkit-scrollbar{display:none}
 
-.search-input{display:flex;align-items:center;background:#1c1c1c;border:2px solid #333;border-radius:12px;padding:10px 15px;gap:10px;transition:0.18s}
+.search-input{display:flex;align-items:center;background:#1c1c1c;border:2px solid #333;border-radius:12px;padding:10px 15px;gap:10px;transition:0.18s;cursor:pointer}
 .search-input input{flex:1;background:transparent;border:none;color:#fff;font-size:16px;outline:none}
 .search-input.foco{border-color:#fff!important;box-shadow:0 0 15px #fff!important;transform:scale(1.02)}
 
@@ -77,12 +80,10 @@ body{background:#000;height:100vh;overflow:hidden}
 .filtros button.activo{background:#222;color:#fff;border-color:#555;transform:scale(1.08)}
 .filtros button.foco{border-color:#fff!important;box-shadow:0 0 12px #fff!important;transform:scale(1.12);color:#fff!important}
 
-.resultados{margin-top:12px;flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:6px}
-.resultados::-webkit-scrollbar{display:none}
-.resultados{scrollbar-width:none}
+.resultados{margin-top:12px;display:flex;flex-direction:column;gap:6px}
 .item{padding:10px 14px;background:#161616;border-radius:10px;border:2px solid #222;color:#fff;transition:0.18s;cursor:pointer}
 .item.activo{background:#222!important;color:#fff!important;transform:scale(1.03);border-color:#444!important}
-.item.foco{border-color:#fff!important;box-shadow:0 0 12px #fff!important;transform:scale(1.06);color:#fff!important}
+.item.foco{border-color:#fff!important;box-shadow:0 0 12px #fff!important;transform:scale(1.04);color:#fff!important}
 
 .teclado-tv{display:flex;flex-direction:column;gap:6px;margin-top:10px;background:#161616;border-radius:12px;padding:10px}
 .fila-teclas{display:flex;gap:6px;justify-content:center}
@@ -94,6 +95,7 @@ body{background:#000;height:100vh;overflow:hidden}
 <div class="fondo"></div>
 <div class="container">
 
+<!-- MENÚ IZQUIERDO -->
 <div class="menu-box">
   <div class="menu" id="menu">
     <a data-img="hero.jpg">🔍 Buscar</a>
@@ -116,9 +118,12 @@ body{background:#000;height:100vh;overflow:hidden}
   <div class="menu-footer">Cuenta: 47810922<br>Vence: 15/05/2028</div>
 </div>
 
+<!-- LADO DERECHO -->
 <div class="derecha-box">
+  <!-- MUESTRA LA IMAGEN DE PORTADA DE LA SECCIÓN -->
   <div id="vistaPreview" class="vista-preview"></div>
 
+  <!-- INTERFAZ DEL BUSCADOR REDUCIDA -->
   <div id="vistaBuscador" class="vista-buscador">
     <div class="search-input" id="boxInput">🔍 <input id="buscador" placeholder="Escribe para buscar..."></div>
     <div class="teclado-tv" id="tecladoTV">
@@ -166,13 +171,25 @@ function enfocar(){
   if(zona==='menu'){
     menuItems[mPos]?.classList.add('foco'); 
     actualizarImagenPreview();
+    menuItems[mPos]?.scrollIntoView({block:'nearest'});
   } 
-  if(zona==='input') boxInput.classList.add('foco'); 
-  if(zona==='teclado') tecladoBtns[tPos]?.classList.add('foco'); 
-  if(zona==='filtros') filtroBtns[fPos]?.classList.add('foco'); 
-  if(zona==='lista') getLista()[lPos]?.classList.add('foco'); 
-  
-  menuItems[mPos]?.scrollIntoView({block:'nearest'});
+  if(zona==='input') {
+    boxInput.classList.add('foco'); 
+    boxInput.scrollIntoView({block:'nearest'});
+  }
+  if(zona==='teclado') {
+    tecladoBtns[tPos]?.classList.add('foco'); 
+  }
+  if(zona==='filtros') {
+    filtroBtns[fPos]?.classList.add('foco'); 
+  }
+  if(zona==='lista') {
+    const el = getLista()[lPos];
+    if(el) {
+      el.classList.add('foco');
+      el.scrollIntoView({block:'nearest', behavior:'smooth'});
+    }
+  } 
 }
 
 function abrirBuscador(){
@@ -198,11 +215,14 @@ function seleccionar(){
   if(zona==='menu'){
     menuItems[mPos]?.classList.add('activo');
     const textoOpcion = menuItems[mPos]?.textContent.toLowerCase();
-    
-    // Al dar ENTER sobre "Buscar", entramos al panel de búsqueda
     if(textoOpcion.includes('buscar')){
       abrirBuscador();
     }
+  }
+
+  // AL DAR ENTER EN LA BARRA DE LUPA -> ACTIVA EL CURSOR DEL INPUT PARA ESCRIBIR
+  if(zona==='input'){
+    buscador.focus();
   }
 
   if(zona==='filtros') filtroBtns[fPos]?.classList.add('activo'); 
@@ -221,7 +241,7 @@ function seleccionar(){
   }
 }
 
-// Soporte para clics táctiles / ratón
+// Soporte para clics con el ratón
 menuItems.forEach((item, idx) => {
   item.addEventListener('click', () => {
     mPos = idx;
@@ -234,10 +254,9 @@ menuItems.forEach((item, idx) => {
 menuItems[0].classList.add('activo');
 
 document.addEventListener('keydown', e => {
-  // ESC / BACKSPACE / Botón ATRÁS de control remoto
   if(['Escape','Backspace'].includes(e.key) || [10009, 461].includes(e.keyCode)){
-    if(enModoBuscador){
-      cerrarBuscador(); // Sale del buscador y regresa al menú
+    if(enModoBuscador && document.activeElement !== buscador){
+      cerrarBuscador();
       return;
     }
   }
@@ -268,7 +287,7 @@ document.addEventListener('keydown', e => {
   
   if(e.key==='ArrowLeft'){ 
     if(zona==='teclado') { tPos=Math.max(tPos-1, 0); } 
-    else if(zona==='filtros'){ if(fPos===0) cerrArBuscador(); else fPos--; } 
+    else if(zona==='filtros'){ if(fPos===0) cerrarBuscador(); else fPos--; } 
     else if(zona==='lista' || zona==='input') { cerrarBuscador(); }
   }
   
