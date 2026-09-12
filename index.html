@@ -7,65 +7,73 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="main-container">
-    <!-- MENÚ LATERAL -->
-    <nav id="menu">
-      <ul>
-        <li><a href="#" class="activo">TV Español</a></li>
-        <li><a href="#">TV English</a></li>
-        <li><a href="#">TV Kid Zone</a></li>
-        <li><a href="#">TV Live Sport</a></li>
-        <li><a href="#">TV 24/7</a></li>
-        <li><a href="#">TV Adult</a></li>
-        <li><a href="#">Películas</a></li>
-        <li><a href="#">Series</a></li>
-        <li><a href="#">Series Sub</a></li>
-        <li><a href="#">Ondeman Sport</a></li>
-        <li><a href="#">Zona Music</a></li>
-        <li><a href="#">Adult VOD</a></li>
-        <li><a href="#">Favoritos</a></li>
-        <li><a href="#">Buscar</a></li>
-        <li><a href="#">Configuraciones</a></li>
-      </ul>
-    </nav>
 
-    <!-- ÁREA DE CONTENIDO / VISTAS -->
-    <div class="content-area">
-      <!-- Información de cuenta -->
-      <div class="info-cuenta">
-        Cuenta: 47810922<br>
-        Vence: 15/05/2028
-      </div>
+  <!-- MENÚ LATERAL -->
+  <nav id="menu">
+    <ul>
+      <li><a href="#" class="activo">TV Español</a></li>
+      <li><a href="#">TV English</a></li>
+      <li><a href="#">TV Kid Zone</a></li>
+      <li><a href="#">TV Live Sport</a></li>
+      <li><a href="#">TV 24/7</a></li>
+      <li><a href="#">TV Adult</a></li>
+      <li><a href="#">Películas</a></li>
+      <li><a href="#">Movies</a></li>
+      <li><a href="#">Series</a></li>
+      <li><a href="#">Series Sub</a></li>
+      <li><a href="#">Ondeman Sport</a></li>
+      <li><a href="#">Zona Music</a></li>
+      <li><a href="#">Adult VOD</a></li>
+      <li><a href="#">Favoritos</a></li>
+      <li><a href="#">Buscar</a></li>
+      <li><a href="#">Configuraciones</a></li>
+    </ul>
+  </nav>
 
-      <!-- Vista Preview / Reproductor / Guía EPG -->
-      <div id="vistaPreview" class="vista"></div>
-
-      <!-- Vista Favoritos -->
-      <div id="vistaFavoritos" class="vista" style="display: none;">
-        <h2>Mis Favoritos</h2>
-        <div id="listaFavoritos"></div>
-      </div>
-
-      <!-- Vista Buscador -->
-      <div id="vistaBuscador" class="vista" style="display: none;">
-        <div class="buscador-container">
-          <input type="text" id="buscador" placeholder="Escribe para buscar..." readonly>
-          <div id="filtros">
-            <button class="activo" data-cat="todo">Todo</button>
-            <button data-cat="canales">Canales</button>
-          </div>
-          <div id="tecladoTV">
-            <button>1</button><button>2</button><button>3</button><button>4</button><button>5</button><button>6</button><button>7</button><button>8</button><button>9</button><button>0</button>
-            <button>Q</button><button>W</button><button>E</button><button>R</button><button>T</button><button>Y</button><button>U</button><button>I</button><button>O</button><button>P</button>
-            <button>A</button><button>S</button><button>D</button><button>F</button><button>G</button><button>H</button><button>J</button><button>K</button><button>L</button><button>⌫</button>
-            <button>Z</button><button>X</button><button>C</button><button>V</button><button>B</button><button>N</button><button>M</button><button>ESPACIO</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Lista general oculta o de soporte para JS -->
-      <div id="lista" style="display: none;"></div>
+  <!-- CONTENEDOR PRINCIPAL -->
+  <div class="container">
+    
+    <!-- INFO DE CUENTA -->
+    <div class="info-cuenta">
+      Cuenta: 47810922<br>
+      Vence: 15/05/2028
     </div>
+
+    <!-- VISTA PREVIEW -->
+    <div id="vistaPreview" class="vista"></div>
+
+    <!-- VISTA FAVORITOS -->
+    <div id="vistaFavoritos" class="vista" style="display: none;">
+      <h2>Mis Favoritos</h2>
+      <div id="listaFavoritos"></div>
+    </div>
+
+    <!-- VISTA BUSCADOR -->
+    <div id="vistaBuscador" class="vista" style="display: none;">
+      <div class="buscador-caja">
+        <div class="input-con-icono">
+          <span class="icono-lupa">🔍</span>
+          <input type="text" id="buscador" placeholder="Escribe para buscar..." readonly>
+        </div>
+
+        <div id="tecladoTV">
+          <button>A</button><button>B</button><button>C</button><button>D</button><button>E</button><button>F</button><button>G</button><button>H</button><button>I</button><button>J</button>
+          <button>K</button><button>L</button><button>M</button><button>N</button><button>O</button><button>P</button><button>Q</button><button>R</button><button>S</button><button>T</button>
+          <button>U</button><button>V</button><button>W</button><button>X</button><button>Y</button><button>Z</button><button>0</button><button>1</button><button>2</button><button>3</button>
+          <button>ESPACIO</button><button>⌫</button>
+        </div>
+
+        <div id="filtros">
+          <button class="activo" data-cat="todo">Todo</button>
+          <button data-cat="canales">Canales</button>
+          <button data-cat="peliculas">Películas</button>
+          <button data-cat="series">Series</button>
+        </div>
+
+        <div id="lista"></div>
+      </div>
+    </div>
+
   </div>
 
   <script src="app.js"></script>
