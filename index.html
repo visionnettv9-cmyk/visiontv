@@ -3,83 +3,71 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VISIONTV</title>
-  <!-- Vinculamos la hoja de estilos externa -->
+  <title>VisionTV</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <div class="main-container">
+    <!-- MENÚ LATERAL -->
+    <nav id="menu">
+      <ul>
+        <li><a href="#" class="activo">TV Español</a></li>
+        <li><a href="#">TV English</a></li>
+        <li><a href="#">TV Kid Zone</a></li>
+        <li><a href="#">TV Live Sport</a></li>
+        <li><a href="#">TV 24/7</a></li>
+        <li><a href="#">TV Adult</a></li>
+        <li><a href="#">Películas</a></li>
+        <li><a href="#">Series</a></li>
+        <li><a href="#">Series Sub</a></li>
+        <li><a href="#">Ondeman Sport</a></li>
+        <li><a href="#">Zona Music</a></li>
+        <li><a href="#">Adult VOD</a></li>
+        <li><a href="#">Favoritos</a></li>
+        <li><a href="#">Buscar</a></li>
+        <li><a href="#">Configuraciones</a></li>
+      </ul>
+    </nav>
 
-<div class="fondo"></div>
+    <!-- ÁREA DE CONTENIDO / VISTAS -->
+    <div class="content-area">
+      <!-- Información de cuenta -->
+      <div class="info-cuenta">
+        Cuenta: 47810922<br>
+        Vence: 15/05/2028
+      </div>
 
-<div class="container">
+      <!-- Vista Preview / Reproductor / Guía EPG -->
+      <div id="vistaPreview" class="vista"></div>
 
-  <nav id="menu">
-  <ul>
-    <li><a href="#" class="activo">TV Español</a></li>
-    <li><a href="#">TV English</a></li>
-    <li><a href="#">TV Kid Zone</a></li>
-    <li><a href="#">TV Live Sport</a></li>
-    <li><a href="#">TV 24/7</a></li>
-    <li><a href="#">TV Adult</a></li>
+      <!-- Vista Favoritos -->
+      <div id="vistaFavoritos" class="vista" style="display: none;">
+        <h2>Mis Favoritos</h2>
+        <div id="listaFavoritos"></div>
+      </div>
 
-    <li><a href="#">Películas</a></li>
-    <li><a href="#">Series</a></li>
-    <li><a href="#">Series Sub</a></li>
-    <li><a href="#">Ondeman Sport</a></li>
-    <li><a href="#">Zona Music</a></li>
-    <li><a href="#">Adult VOD</a></li>
+      <!-- Vista Buscador -->
+      <div id="vistaBuscador" class="vista" style="display: none;">
+        <div class="buscador-container">
+          <input type="text" id="buscador" placeholder="Escribe para buscar..." readonly>
+          <div id="filtros">
+            <button class="activo" data-cat="todo">Todo</button>
+            <button data-cat="canales">Canales</button>
+          </div>
+          <div id="tecladoTV">
+            <button>1</button><button>2</button><button>3</button><button>4</button><button>5</button><button>6</button><button>7</button><button>8</button><button>9</button><button>0</button>
+            <button>Q</button><button>W</button><button>E</button><button>R</button><button>T</button><button>Y</button><button>U</button><button>I</button><button>O</button><button>P</button>
+            <button>A</button><button>S</button><button>D</button><button>F</button><button>G</button><button>H</button><button>J</button><button>K</button><button>L</button><button>⌫</button>
+            <button>Z</button><button>X</button><button>C</button><button>V</button><button>B</button><button>N</button><button>M</button><button>ESPACIO</button>
+          </div>
+        </div>
+      </div>
 
-    <li><a href="#">Favoritos</a></li>
-    <li><a href="#">Buscar</a></li>
-    <li><a href="#">Configuraciones</a></li>
-  </ul>
-</nav>    <div class="menu-footer">Cuenta: 47810922<br>Vence: 15/05/2028</div>
+      <!-- Lista general oculta o de soporte para JS -->
+      <div id="lista" style="display: none;"></div>
+    </div>
   </div>
 
-  <!-- LADO DERECHO -->
-  <div class="derecha-box">
-    <!-- VISTA PREVIA -->
-    <div id="vistaPreview" class="vista-preview"></div>
-
-    <!-- VISTA FAVORITOS -->
-    <div id="vistaFavoritos" class="vista-favoritos">
-      <h2>⭐ Tus Favoritos</h2>
-      <div class="resultados" id="listaFavoritos"></div>
-    </div>
-
-    <!-- VISTA BUSCADOR -->
-    <div id="vistaBuscador" class="vista-buscador">
-      <div class="search-input" id="boxInput">🔍 <input id="buscador" placeholder="Escribe para buscar..."></div>
-      
-      <div class="teclado-tv" id="tecladoTV">
-        <div class="fila-teclas"><button>A</button><button>B</button><button>C</button><button>D</button><button>E</button><button>F</button><button>G</button><button>H</button><button>I</button><button>J</button></div>
-        <div class="fila-teclas"><button>K</button><button>L</button><button>M</button><button>N</button><button>O</button><button>P</button><button>Q</button><button>R</button><button>S</button><button>T</button></div>
-        <div class="fila-teclas"><button>U</button><button>V</button><button>W</button><button>X</button><button>Y</button><button>Z</button><button>0</button><button>1</button><button>2</button><button>3</button><button>ESPACIO</button><button>⌫</button></div>
-      </div>
-      
-      <div class="filtros" id="filtros">
-        <button class="activo" data-cat="todo">Todo</button>
-        <button data-cat="canales">Canales</button>
-        <button data-cat="peliculas">Películas</button>
-        <button data-cat="series">Series</button>
-      </div>
-
-      <div class="resultados" id="lista">
-        <div class="item" data-id="1" data-cat="series">📺 Teresa (2010)</div>
-        <div class="item" data-id="2" data-cat="peliculas">🎬 Terremoto en LA</div>
-        <div class="item" data-id="3" data-cat="canales">📺 Telecinco HD</div>
-        <div class="item" data-id="4" data-cat="canales">📺 Antena 3 HD</div>
-        <div class="item" data-id="5" data-cat="series">📺 La Historia de Teresa</div>
-        <div class="item" data-id="6" data-cat="peliculas">🎬 Gladiador 2</div>
-        <div class="item" data-id="7" data-cat="peliculas">🎬 Avatar 2</div>
-      </div>
-    </div>
-
-  </div>
-
-</div>
-
-<!-- Vinculamos el archivo JavaScript antes de cerrar el body -->
-<script src="app.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
